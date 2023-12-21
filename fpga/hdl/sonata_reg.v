@@ -129,6 +129,8 @@ module sonata_reg #(
    reg                          reg_crypt_go_pulse;
    wire                         reg_crypt_go_pulse_crypt;
    reg  [22:0]                  reg_test_leds;
+   reg                          aes_always_on;
+   reg                          aes_always_go;
 
    reg                          busy_usb;
    reg                          done_r;
@@ -169,10 +171,18 @@ module sonata_reg #(
 
    assign O_textin = reg_crypt_textin_crypt;
    assign O_key = reg_crypt_key_crypt;
-   assign O_start = reg_crypt_go_pulse_crypt;
+   assign O_start = aes_always_on ? aes_always_go : reg_crypt_go_pulse_crypt;
    assign O_test_leds = reg_test_leds[20:0];
    assign O_led_test_mode = reg_test_leds[21];
    assign O_led_flash_all = reg_test_leds[22];
+
+   always @(posedge crypto_clk) begin
+       if (aes_always_go)
+           aes_always_go <= 1'b0;
+       else if (~I_busy)
+           aes_always_go <= 1'b1;
+   end
+
 
    //////////////////////////////////
    // read logic:
@@ -239,6 +249,7 @@ module sonata_reg #(
          O_auto_lfsr_mode <= 1;
          reg_test_leds <= 0;
          O_wait_value <= 4;
+         aes_always_on <= 0;
       end
 
       else begin
@@ -249,6 +260,7 @@ module sonata_reg #(
                `REG_CRYPT_TEXTIN:       reg_crypt_textin[reg_bytecnt*8 +: 8] <= write_data;
                `REG_CRYPT_CIPHERIN:     reg_crypt_cipherin[reg_bytecnt*8 +: 8] <= write_data;
                `REG_CRYPT_KEY:          reg_crypt_key[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_AES_ALWAYS_ON:      aes_always_on <= write_data[0];
 
                // Hyperram:
                `REG_LB_DATA1:           reg_lb_both_data[reg_bytecnt*8 +: 8] <= write_data;

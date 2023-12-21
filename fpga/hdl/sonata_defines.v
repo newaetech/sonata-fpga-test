@@ -53,6 +53,7 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_AES_CORE_SEL                8'h0f
 `define REG_TURBO                       8'h10
 `define REG_ANALOG_DIGITAL              8'h11
+`define REG_AES_ALWAYS_ON               8'h12
 
 // hyperram:
 `define REG_LB_ACTION                   8'h80

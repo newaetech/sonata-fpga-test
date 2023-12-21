@@ -52,6 +52,14 @@ set_property -dict { PACKAGE_PIN   D3  IOSTANDARD   LVCMOS18 } [get_ports { SELS
 set_property -dict { PACKAGE_PIN   F4  IOSTANDARD   LVCMOS18 } [get_ports { SELSW[1] }];
 set_property -dict { PACKAGE_PIN   F3  IOSTANDARD   LVCMOS18 } [get_ports { SELSW[2] }];
 
+set_property -dict { PACKAGE_PIN  M16  IOSTANDARD   LVCMOS18 } [get_ports { FPGAIO_TURBO }];
+set_property -dict { PACKAGE_PIN  G13  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[0] }];
+set_property -dict { PACKAGE_PIN  D14  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[1] }];
+set_property -dict { PACKAGE_PIN  C14  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[2] }];
+set_property -dict { PACKAGE_PIN   C9  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[3] }];
+set_property -dict { PACKAGE_PIN   B9  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[4] }];
+set_property -dict { PACKAGE_PIN   B8  IOSTANDARD   LVCMOS18 } [get_ports { ANALOG_DIGITAL[5] }];
+
 #set_property IOSTANDARD ANALOG [get_ports { vauxp0 }]; 
 #set_property IOSTANDARD ANALOG [get_ports { vauxn0 }]; 
 #set_property IOSTANDARD ANALOG [get_ports { vauxp1 }]; 
