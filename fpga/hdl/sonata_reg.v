@@ -110,7 +110,9 @@ module sonata_reg #(
    output reg  [31:0]                           O_auto_stop_addr,
    output reg  [7:0]                            O_wait_value,
 
-// LED/DIP testing:
+// LED/DIP/misc:
+   output reg                                   O_turbo,
+   input  wire [5:0]                            I_analog_digital,
    input  wire [15:0]                           I_dips,
    output wire [20:0]                           O_test_leds,
    output wire                                  O_led_test_mode,
@@ -203,8 +205,9 @@ module sonata_reg #(
             `REG_LB_ITERATIONS:         reg_read_data = I_auto_iterations[reg_bytecnt*8 +: 8];
             `REG_LB_CURRENT_ADDR:       reg_read_data = I_auto_current_addr[reg_bytecnt*8 +: 8];
 
-            // LED/DIP test:
+            // LED/DIP/misc:
             `REG_DIPS:                  reg_read_data = I_dips[reg_bytecnt*8 +: 8];
+            `REG_ANALOG_DIGITAL:        reg_read_data = I_analog_digital;
 
             default:                    reg_read_data = 0;
          endcase
@@ -263,6 +266,8 @@ module sonata_reg #(
                // multiple AES cores:
                `REG_AES_CORES_EN:       cores_en[reg_bytecnt*8 +: 8] <= write_data;
                `REG_AES_CORE_SEL:       core_sel <= write_data;
+
+               `REG_TURBO:              O_turbo <= write_data[0];
 
             endcase
          end

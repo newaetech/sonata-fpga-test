@@ -47,8 +47,6 @@ module sonata_top #(
     output reg                          LED_HALTED,
     output reg                          LED_BOOTOK,
 
-    // TODO: add RGBLED0 (inverted?)
-
     // switches:
     input wire  [7:0]                   USRSW,
     input wire  [4:0]                   NAVSW,
@@ -63,19 +61,13 @@ module sonata_top #(
     output wire                         HYPERRAM_CS,
 
 
-    /* XADC: (TODO?)
-    input  wire                         vauxp0,
-    input  wire                         vauxn0,
-    input  wire                         vauxp1,
-    input  wire                         vauxn1,
-    input  wire                         vauxp8,
-    input  wire                         vauxn8,
-    input  wire                         vauxp12,
-    input  wire                         vauxn12
-    */
+    // XADC:
+    input  wire [5:0]                   ANALOG_DIGITAL,
+    input  wire [5:0]                   ANALOG_P,
+    input  wire [5:0]                   ANALOG_N,
 
     // misc:
-    input  wire                         FPGAIO_TURBO
+    output wire                         FPGAIO_TURBO
 
     // all the other interface signals that we're not using but still need to be driven:
     // TODO
@@ -365,6 +357,8 @@ module sonata_top #(
        .lb2_rd_d                (0),
        .lb2_rd_rdy              (0),
 
+       .O_turbo                 (FPGAIO_TURBO),
+       .I_analog_digital        (ANALOG_DIGITAL),
        .I_dips                  (all_switches),
        .O_led_test_mode         (led_test_mode),
        .O_led_flash_all         (led_flash_all),
@@ -405,7 +399,7 @@ module sonata_top #(
    assign crypt_busy = aes_busy[0];
 
 
-   // Example AES Core - TODO: multiple cores
+   // Example AES Core
    genvar i;
    generate
        for (i = 0; i < `AES_INSTANCES; i = i + 1) begin: aes_instances
@@ -454,7 +448,7 @@ module sonata_top #(
         .hypr1_rwds                     (HYPERRAM_RWDS  ),
         .hypr1_ckp                      (HYPERRAM_CKP   ),
         .hypr1_ckn                      (HYPERRAM_CKN   ),
-        .hypr1_rst_l                    (HYPERRAM_nRST  ), // TODO: check polarity
+        .hypr1_rst_l                    (HYPERRAM_nRST  ),
         .hypr1_cs_l                     (HYPERRAM_CS    ),
         .hypr1_busy                     (hypr_busy      ),
 
@@ -513,6 +507,8 @@ module sonata_top #(
    ) U_xadc (
       .reset_i          (reset),
       .clk_usb          (mainclk_buf),
+      .ANALOG_P         (ANALOG_P),
+      .ANALOG_N         (ANALOG_N),
       .reg_address      (reg_address[7:0]), 
       .reg_bytecnt      (reg_bytecnt), 
       .reg_datao        (read_data_xadc), 

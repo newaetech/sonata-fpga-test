@@ -28,6 +28,8 @@ module xadc #(
 )(
    input  wire         reset_i,
    input  wire         clk_usb,
+   input  wire [5:0]   ANALOG_P,
+   input  wire [5:0]   ANALOG_N,
    input  wire [7:0]   reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    input  wire [7:0]   reg_datai,    // Data to write
@@ -171,6 +173,21 @@ module xadc #(
           .do_out               (drp_dout),             // output wire [15 : 0] do_out
           .vp_in                (1'b0),                 // input wire vp_in
           .vn_in                (1'b0),                 // input wire vn_in
+
+          .vauxp4               (ANALOG_P[0]),
+          .vauxp12              (ANALOG_P[1]),
+          .vauxp5               (ANALOG_P[2]),
+          .vauxp13              (ANALOG_P[3]),
+          .vauxp6               (ANALOG_P[4]),
+          .vauxp14              (ANALOG_P[5]),
+
+          .vauxn4               (ANALOG_N[0]),
+          .vauxn12              (ANALOG_N[1]),
+          .vauxn5               (ANALOG_N[2]),
+          .vauxn13              (ANALOG_N[3]),
+          .vauxn6               (ANALOG_N[4]),
+          .vauxn14              (ANALOG_N[5]),
+
           .user_temp_alarm_out  (user_temp_alarm_out),  // output wire user_temp_alarm_out
           .vccint_alarm_out     (vccint_alarm_out),     // output wire vccint_alarm_out
           .vccaux_alarm_out     (vccaux_alarm_out),     // output wire vccaux_alarm_out
