@@ -227,13 +227,14 @@ module sonata_reg #(
    end
 
    // Register output read data to ease timing. If you need read data one clock
-   /* cycle earlier, simply remove this stage:
+   // cycle earlier, simply remove this stage:
    always @(posedge usb_clk)
       read_data <= reg_read_data;
-   */
 
+   /*
    always @(*)
       read_data = reg_read_data;
+   */
 
    //////////////////////////////////
    // write logic (USB clock domain):

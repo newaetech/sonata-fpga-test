@@ -33,7 +33,7 @@ module xadc #(
    input  wire [7:0]   reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    input  wire [7:0]   reg_datai,    // Data to write
-   inout  wire [7:0]   reg_datao,    // Data to read
+   output reg  [7:0]   reg_datao,    // Data to read
    input  wire         reg_read,     // Read flag
    input  wire         reg_write,    // Write flag
    output wire         xadc_error
@@ -58,7 +58,9 @@ module xadc #(
 // Reads: write DRP_ADDR with MSB clear, then obtain read data from DRP_DATA.
 
    reg [7:0] reg_datao_reg;
-   assign reg_datao = reg_datao_reg;
+   //assign reg_datao = reg_datao_reg;
+   always @(posedge clk_usb)
+      reg_datao <= reg_datao_reg;
 
    wire [4:0] xadc_stat;
    reg  [4:0] xadc_stat_hold;

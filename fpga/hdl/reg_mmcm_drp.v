@@ -34,7 +34,7 @@ module reg_mmcm_drp #(
    input  wire [7:0]   reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    input  wire [7:0]   reg_datai,    // Data to write
-   output wire [7:0]   reg_datao,    // Data to read
+   output reg  [7:0]   reg_datao,    // Data to read
    input  wire         reg_read,     // Read flag
    input  wire         reg_write,    // Write flag
 
@@ -53,7 +53,9 @@ module reg_mmcm_drp #(
 
 
    reg [7:0] reg_datao_reg;
-   assign reg_datao = reg_datao_reg;
+   //assign reg_datao = reg_datao_reg;
+   always @(posedge clk_usb)
+       reg_datao <= reg_datao_reg;
 
    always @(*) begin
       if (reg_read && selected) begin

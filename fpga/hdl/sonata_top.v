@@ -29,7 +29,7 @@ either expressed or implied, of NewAE Technology Inc.
 `default_nettype none 
 
 module sonata_top #(
-    parameter pBIT_RATE = 8  // number of clocks per UART bit; 195400 bps @ 25 MHz
+    parameter pBIT_RATE = 109  // number of clocks per UART bit; 230400 bps @ 25 MHz
 )(
     // convention: uppercase indicate same name as on schematic; lowercase different
     input wire                          MAINCLK,
