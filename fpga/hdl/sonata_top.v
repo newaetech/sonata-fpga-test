@@ -497,7 +497,7 @@ module sonata_top #(
         .lb2_addr                       (),
         .lb2_wr_d                       (),
         .lb2_rd_d                       (0),
-        .lb2_rd_rdy                     (0),
+        .lb2_rd_rdy                     (1'b1),
         .hr2_busy                       (0),
         .hr2_busy_stuck                 ()
     );
