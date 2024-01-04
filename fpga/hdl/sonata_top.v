@@ -372,6 +372,7 @@ module sonata_top #(
        .reset_i          (reset),
        .clk_usb          (mainclk_buf),
        .progclk          (progclk),
+       .shutdown         (xadc_error_flag),
        .mmcm_locked      (mmcm_locked),
        .reg_address      (reg_address[7:0]), 
        .reg_bytecnt      (reg_bytecnt), 

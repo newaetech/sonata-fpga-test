@@ -36,6 +36,7 @@ module sonata_progclk #(
     input  wire                         reset_i,
     input  wire                         clk_usb,
     output wire                         progclk,
+    input  wire                         shutdown,
     output wire                         mmcm_locked,
     input  wire [7:0]                   reg_address,
     input  wire [pBYTECNT_SIZE-1:0]     reg_bytecnt,
@@ -119,7 +120,7 @@ module sonata_progclk #(
       .CLKIN2                       (1'b0),
       // Control Ports: 1-bit (each) input: MMCM control ports
       .CLKINSEL                     (1'b1),
-      .PWRDWN                       (1'b0),
+      .PWRDWN                       (shutdown),
       .RST                          (drp_reset),
       // DRP Ports:
       .DADDR                        (drp_addr),
