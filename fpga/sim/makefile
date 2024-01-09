@@ -45,6 +45,7 @@ compile:
 	-Wselect-range \
 	-DHYPERRAM_MODEL \
         -DSONATA \
+	-DHBMC \
         -DAES_INSTANCES=32 \
 	hr_model.v \
 	-I../hdl/ \

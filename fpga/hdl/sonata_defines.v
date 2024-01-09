@@ -76,8 +76,13 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_XADC_DRP_DATA               8'hc1
 `define REG_XADC_STAT                   8'hc2
 
-// MMCM DRP:
+// MMCM DRP (AES):
 `define REG_MMCM_DRP_ADDR               8'hd0
 `define REG_MMCM_DRP_DATA               8'hd1
 `define REG_MMCM_DRP_RESET              8'hd2
+
+// MMCM DRP (HyperRAM):
+`define REG_MMCM_HR_DRP_ADDR            8'he0
+`define REG_MMCM_HR_DRP_DATA            8'he1
+`define REG_MMCM_HR_DRP_RESET           8'he2
 

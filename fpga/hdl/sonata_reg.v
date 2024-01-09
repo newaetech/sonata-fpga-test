@@ -57,6 +57,7 @@ module sonata_reg #(
    input  wire                                  reg_addrvalid,   // Address valid flag
 
    input  wire                                  mmcm_locked,
+   input  wire                                  mmcm_hr_locked,
 
 // AES:
    input  wire [pPT_WIDTH-1:0]                  I_textout,
@@ -94,6 +95,7 @@ module sonata_reg #(
    input  wire                                  hypr1_busy,
    input  wire                                  hypr2_busy,
    input  wire                                  clk_90p_locked,
+   input  wire                                  clk_iserdes_locked,
 
    output reg                                   O_lb_manual,
    output reg                                   O_auto_check1,
@@ -192,7 +194,7 @@ module sonata_reg #(
       if (reg_addrvalid && reg_read) begin
          case (reg_address)
              // AES / config:
-            `REG_CLKSETTINGS:           reg_read_data = {7'b0, mmcm_locked};
+            `REG_CLKSETTINGS:           reg_read_data = {6'b0, mmcm_hr_locked, mmcm_locked};
             `REG_USER_LED:              reg_read_data = {7'b0, O_user_led};
             `REG_CRYPT_TYPE:            reg_read_data = pCRYPT_TYPE;
             `REG_CRYPT_REV:             reg_read_data = pCRYPT_REV;
@@ -209,7 +211,8 @@ module sonata_reg #(
             `REG_LB_MANUAL:             reg_read_data = {7'b0, O_lb_manual};
             `REG_LB_DATA1:              reg_read_data = reg_lb_both_rd_d[reg_bytecnt*8 +: 8];
             `REG_LB_DATA2:              reg_read_data = reg_lb_both_rd_d[(reg_bytecnt+4)*8 +: 8];
-            `REG_HYPER_STATUS:          reg_read_data = {3'b0, I_auto_pass, I_auto_fail, hypr2_busy, hypr1_busy, clk_90p_locked};
+            //`REG_HYPER_STATUS:          reg_read_data = {3'b0, I_auto_pass, I_auto_fail, hypr2_busy, hypr1_busy, clk_90p_locked};
+            `REG_HYPER_STATUS:          reg_read_data = {2'b0, clk_iserdes_locked, I_auto_pass, I_auto_fail, hypr2_busy, hypr1_busy, clk_90p_locked};
             `REG_LB_ERRORS:             reg_read_data = I_auto_errors[reg_bytecnt*8 +: 8];
             `REG_LB_ERROR_ADDR:         reg_read_data = I_auto_error_addr[reg_bytecnt*8 +: 8];
             `REG_LB_ITERATIONS:         reg_read_data = I_auto_iterations[reg_bytecnt*8 +: 8];

@@ -4,3 +4,6 @@
 [submodule "fpga/fpga-common"]
 	path = fpga/fpga-common
 	url = git@github.com:newaetech/fpga-common.git
+[submodule "fpga/OpenHBMC"]
+	path = fpga/OpenHBMC
+	url = https://github.com/OVGN/OpenHBMC.git

@@ -99,11 +99,14 @@ module sonata_top #(
     wire [7:0] read_data_main;
     wire [7:0] read_data_xadc;
     wire [7:0] read_data_mmcm_drp;
+    wire [7:0] read_data_mmcm_hr_drp;
     wire reg_read;
     wire reg_write;
     wire mmcm_locked;
+    wire mmcm_hr_locked;
     wire xadc_error_flag;
     wire progclk;
+    wire progclk_hr;
 
 
 `ifdef __ICARUS__
@@ -214,6 +217,7 @@ module sonata_top #(
     wire        hreset;
     wire        memtest_error;
     wire        clk_90p_locked;
+    wire        clk_iserdes_locked;
     wire        hypr_busy;
     wire        hypr_busy_stuck;
 
@@ -245,6 +249,11 @@ module sonata_top #(
     reg [24:0] progclk_heartbeat;
     always @(posedge progclk) progclk_heartbeat <= progclk_heartbeat +  23'd1;
 
+    // programmable clock Heartbeat
+    reg [24:0] progclk_hr_heartbeat;
+    always @(posedge progclk_hr) progclk_hr_heartbeat <= progclk_hr_heartbeat +  23'd1;
+
+
     always @(*) begin
         if (led_test_mode) begin
             if (led_flash_all) begin
@@ -267,14 +276,16 @@ module sonata_top #(
         else begin
             USRLED[0] = mainclk_heartbeat[24];
             USRLED[1] = progclk_heartbeat[24];
-            USRLED[2] = usrled;
+            USRLED[2] = progclk_hr_heartbeat[24];
             USRLED[3] = hypr_busy_stuck;
             USRLED[4] = ~clk_90p_locked;
-            USRLED[5] = reset;
-            USRLED[6] = mmcm_locked;
-            USRLED[7] = ss2_error;
-            CHERIERR[0] = xadc_error_flag;
-            CHERIERR[8:1] = 8'b0;
+            USRLED[5] = ~clk_iserdes_locked;
+            USRLED[6] = ~mmcm_locked;
+            USRLED[7] = ~mmcm_hr_locked;
+            CHERIERR[0] = ss2_error;
+            CHERIERR[1] = xadc_error_flag;
+            CHERIERR[2] = usrled;
+            CHERIERR[8:3] = 8'b0;
             LED_LEGACY = 1'b0;
             LED_CHERI = 1'b0;
             LED_HALTED = 1'b0;
@@ -282,7 +293,7 @@ module sonata_top #(
         end
     end
 
-    assign read_data = read_data_main | read_data_xadc | read_data_mmcm_drp;
+    assign read_data = read_data_main | read_data_xadc | read_data_mmcm_drp | read_data_mmcm_hr_drp;
 
     wire [15:0] all_switches = {USRSW, NAVSW, SELSW};
 
@@ -298,7 +309,7 @@ module sonata_top #(
        .reset_i                 (reset),
        .crypto_clk              (progclk),
        .usb_clk                 (mainclk_buf), 
-       .hclk                    (progclk),
+       .hclk                    (progclk_hr),
        .reg_address             (reg_address[7:0]),
        .reg_bytecnt             (reg_bytecnt), 
        .read_data               (read_data_main), 
@@ -308,6 +319,7 @@ module sonata_top #(
        .reg_addrvalid           (1'b1),
 
        .mmcm_locked             (mmcm_locked),
+       .mmcm_hr_locked          (mmcm_hr_locked),
 
        .I_textout               (128'b0),               // unused
        .I_cipherout             (crypt_cipherin),
@@ -327,6 +339,7 @@ module sonata_top #(
        .hypr1_busy              (hypr_busy_stuck),
        .hypr2_busy              (0),
        .clk_90p_locked          (clk_90p_locked ),
+       .clk_iserdes_locked      (clk_iserdes_locked ),
 
        .O_lb_manual             (lb_manual       ),
        .O_auto_clear_fail       (auto_clear_fail ),
@@ -372,11 +385,14 @@ module sonata_top #(
        .reset_i          (reset),
        .clk_usb          (mainclk_buf),
        .progclk          (progclk),
+       .progclk_hr       (progclk_hr),
        .shutdown         (xadc_error_flag),
        .mmcm_locked      (mmcm_locked),
+       .mmcm_hr_locked   (mmcm_hr_locked),
        .reg_address      (reg_address[7:0]), 
        .reg_bytecnt      (reg_bytecnt), 
        .reg_datao        (read_data_mmcm_drp),
+       .reg_datao_hr     (read_data_mmcm_hr_drp),
        .reg_datai        (write_data), 
        .reg_read         (reg_read), 
        .reg_write        (reg_write)
@@ -418,16 +434,158 @@ module sonata_top #(
 
    endgenerate
 
-
    assign lb1_wr        = (lb_manual)? manual_lb1_wr : auto_lb1_wr;
    assign lb1_rd        = (lb_manual)? manual_lb1_rd : auto_lb1_rd;
    assign lb1_addr      = (lb_manual)? manual_lb1_addr : auto_lb1_addr;
    assign lb1_wr_d      = (lb_manual)? manual_lb1_wr_d : auto_lb1_wr_d;
 
+   /* AXI statics:
+   ID = 0
+   LEN = 0 (1 beat)
+   SIZE = 2 (4 bytes / 32 bits)
+   BURST = 0
+   LOCK = 0
+   REGION = 0
+   CACHE = 0
+   QOS = 0
+   PROT = 0
+   */
 
+`ifdef HBMC
+    wire [31:0] awaddr;
+    wire awvalid;
+    wire awready;
+
+    // write data:
+    wire [31:0] wdata;
+    wire wvalid;
+    wire wready;
+
+    // write response:
+    wire [1:0] bresp;
+    wire bvalid;
+    wire bready;
+
+    // read address:
+    wire [31:0] araddr;
+    wire arvalid;
+    wire arready;
+
+    // read data:
+    wire [31:0] rdata;
+    wire [1:0] rresp;
+    wire rvalid;
+    wire rready;
+
+    hyperram_hbmc_wrapper U_hyperram_wrapper (
+        .hreset                 (hreset),
+        .hclk                   (progclk_hr),
+
+        .error                  (),
+        .clk_90p_locked         (clk_90p_locked),
+        .clk_iserdes_locked     (clk_iserdes_locked),
+
+        //.s_axi_aclk             (progclk_hr),
+        .s_axi_aclk             (mainclk_buf),
+        .s_axi_aresetn          (NRST),
+
+        .s_axi_awid             (0),
+        .s_axi_awaddr           (awaddr),
+        .s_axi_awlen            (0),
+        .s_axi_awsize           (4),
+        .s_axi_awburst          (0),
+        .s_axi_awlock           (0),
+        .s_axi_awregion         (0),
+        .s_axi_awcache          (0),
+        .s_axi_awqos            (0),
+        .s_axi_awprot           (0),
+        .s_axi_awvalid          (awvalid),
+        .s_axi_awready          (awready),
+
+        .s_axi_wdata            (wdata  ),
+        .s_axi_wstrb            (4'b1111),
+        .s_axi_wlast            (1'b1   ),
+        .s_axi_wvalid           (wvalid ),
+        .s_axi_wready           (wready ),
+
+        .s_axi_bid              (),             // unused (constant)
+        .s_axi_bresp            (bresp  ),
+        .s_axi_bvalid           (bvalid ),
+        .s_axi_bready           (bready ),
+
+        .s_axi_arid             (0),
+        .s_axi_araddr           (araddr),
+        .s_axi_arlen            (0),
+        .s_axi_arsize           (4),
+        .s_axi_arburst          (0),
+        .s_axi_arlock           (0),
+        .s_axi_arregion         (0),
+        .s_axi_arcache          (0),
+        .s_axi_arqos            (0),
+        .s_axi_arprot           (0),
+        .s_axi_arvalid          (arvalid),
+        .s_axi_arready          (arready),
+
+        .s_axi_rid              (),             // unused (constant)
+        .s_axi_rdata            (rdata  ),
+        .s_axi_rresp            (rresp  ),
+        .s_axi_rlast            (),             // unused (constant)
+        .s_axi_rvalid           (rvalid ),
+        .s_axi_rready           (rready ),
+
+        .hypr_dq                (HYPERRAM_DQ  ),
+        .hypr_rwds              (HYPERRAM_RWDS),
+        .hypr_ckp               (HYPERRAM_CKP ),
+        .hypr_ckn               (HYPERRAM_CKN ),
+        .hypr_rst_l             (HYPERRAM_nRST),
+        .hypr_cs_l              (HYPERRAM_CS  ),
+        .hypr_busy              (hypr_busy    )
+    );
+
+    simple_hyperram_axi_rwtest U_hyperram_test(
+        //.clk                            (progclk_hr     ),
+        .clk                            (mainclk_buf    ),
+        .reset                          (hreset         ),
+        .active_usb                     (~lb_manual     ),
+        .clear_fail                     (auto_clear_fail),
+        .lfsr_mode                      (auto_lfsr_mode ),
+        .pass                           (auto_pass      ),
+        .fail                           (auto_fail      ),
+        .iteration                      (auto_iterations),
+        .current_addr                   (auto_current_addr),
+        .total_errors                   (auto_errors    ),
+        .error_addr                     (auto_error_addr),
+        .addr_start                     (auto_addr_start ),
+        .addr_stop                      (auto_addr_stop ),
+        .read_error                     (hypr_busy_stuck ), // re-purposing existing flag!
+
+        .awaddr                         (awaddr  ),
+        .awvalid                        (awvalid ),
+        .awready                        (awready ),
+                                                
+        .wdata                          (wdata   ),
+        .wvalid                         (wvalid  ),
+        .wready                         (wready  ),
+                                                
+        .bresp                          (bresp   ),
+        .bvalid                         (bvalid  ),
+        .bready                         (bready  ),
+                                                
+        .araddr                         (araddr  ),
+        .arvalid                        (arvalid ),
+        .arready                        (arready ),
+                                                
+        .rdata                          (rdata   ),
+        .rresp                          (rresp   ),
+        .rvalid                         (rvalid  ),
+        .rready                         (rready  )
+    );
+
+
+`else
     hyperram_wrapper U_hyperram_wrapper (
         .hreset                         (hreset),
-        .hclk                           (progclk),
+        .hclk                           (progclk_hr),
         .error                          (),
         .clk_90p_locked                 (clk_90p_locked),
 
@@ -467,7 +625,7 @@ module sonata_top #(
     );
 
     simple_hyperram_rwtest U_hyperram_test(
-        .clk                            (progclk        ),
+        .clk                            (progclk_hr     ),
         .reset                          (reset          ),
         .active_usb                     (~lb_manual     ),
         .clear_fail                     (auto_clear_fail),
@@ -502,6 +660,8 @@ module sonata_top #(
         .hr2_busy                       (0),
         .hr2_busy_stuck                 ()
     );
+
+`endif
 
    xadc #(
       .pBYTECNT_SIZE    (pBYTECNT_SIZE)
