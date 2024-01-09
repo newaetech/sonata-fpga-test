@@ -220,6 +220,7 @@ module sonata_top #(
     wire        clk_iserdes_locked;
     wire        hypr_busy;
     wire        hypr_busy_stuck;
+    wire        hbmc_idle;
 
     wire        lb_manual;
     wire        auto_clear_fail;
@@ -235,6 +236,11 @@ module sonata_top #(
     wire [31:0] auto_addr_stop;
 
     wire [7:0]  wait_value;
+
+    wire hbmc_write;
+    wire hbmc_read;
+    wire [31:0] hbmc_wdata;
+    wire [31:0] hbmc_rdata;
 
     wire led_test_mode;
     wire led_flash_all;
@@ -285,7 +291,8 @@ module sonata_top #(
             CHERIERR[0] = ss2_error;
             CHERIERR[1] = xadc_error_flag;
             CHERIERR[2] = usrled;
-            CHERIERR[8:3] = 8'b0;
+            CHERIERR[3] = ~hbmc_idle;
+            CHERIERR[8:4] = 8'b0;
             LED_LEGACY = 1'b0;
             LED_CHERI = 1'b0;
             LED_HALTED = 1'b0;
@@ -369,6 +376,12 @@ module sonata_top #(
        .lb2_wr_d                (),
        .lb2_rd_d                (0),
        .lb2_rd_rdy              (0),
+
+       .hbmc_write              (hbmc_write     ),
+       .hbmc_read               (hbmc_read      ),
+       .hbmc_wdata              (hbmc_wdata     ),
+       .hbmc_rdata              (hbmc_rdata     ),
+       .hbmc_idle               (hbmc_idle      ),
 
        .O_turbo                 (FPGAIO_TURBO),
        .I_analog_digital        (ANALOG_DIGITAL),
@@ -487,7 +500,7 @@ module sonata_top #(
 
         //.s_axi_aclk             (progclk_hr),
         .s_axi_aclk             (mainclk_buf),
-        .s_axi_aresetn          (NRST),
+        .s_axi_aresetn          (~hreset),
 
         .s_axi_awid             (0),
         .s_axi_awaddr           (awaddr),
@@ -547,6 +560,10 @@ module sonata_top #(
         .clk                            (mainclk_buf    ),
         .reset                          (hreset         ),
         .active_usb                     (~lb_manual     ),
+        .single_write_usb               (hbmc_write     ),
+        .single_read_usb                (hbmc_read      ),
+        .single_wdata                   (hbmc_wdata     ),
+        .single_rdata                   (hbmc_rdata     ),
         .clear_fail                     (auto_clear_fail),
         .lfsr_mode                      (auto_lfsr_mode ),
         .pass                           (auto_pass      ),
@@ -558,6 +575,7 @@ module sonata_top #(
         .addr_start                     (auto_addr_start ),
         .addr_stop                      (auto_addr_stop ),
         .read_error                     (hypr_busy_stuck ), // re-purposing existing flag!
+        .idle                           (hbmc_idle),
 
         .awaddr                         (awaddr  ),
         .awvalid                        (awvalid ),

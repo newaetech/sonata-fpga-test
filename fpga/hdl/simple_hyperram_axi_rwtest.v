@@ -31,6 +31,8 @@ module simple_hyperram_axi_rwtest (
     input wire                          clk,
     input wire                          reset,
     input wire                          active_usb,
+    input wire                          single_write_usb,
+    input wire                          single_read_usb,
     input wire                          clear_fail,
     input wire                          lfsr_mode,
     output reg                          pass,
@@ -42,6 +44,9 @@ module simple_hyperram_axi_rwtest (
     input  wire [31:0]                  addr_start,
     input  wire [31:0]                  addr_stop,
     output reg                          read_error,
+    input  wire [31:0]                  single_wdata,
+    output reg  [31:0]                  single_rdata,
+    output wire                         idle,
 
     // write address:
     output wire [31 : 0]                awaddr,
@@ -86,26 +91,49 @@ reg [31:0] lfsr;
 wire [31:0] expected_data = (lfsr_mode)? lfsr ^ haddr : lfsr;
 
 reg writing;
+wire single_write;
+wire single_read;
+wire single_write_r;
+wire single_read_r;
+reg single_writing;
+reg single_reading;
+wire active;
 
 assign current_addr = haddr;
 assign awaddr = haddr;
 assign araddr = haddr;
-assign wdata = expected_data;
+assign wdata = single_write ? single_wdata : expected_data;
 assign bready = 1'b1;
 assign rready = 1'b1;
+assign idle = state == pS_IDLE;
 
-// since "active" controls FSM states, let's sync it properly:
-(* ASYNC_REG = "TRUE" *) reg[2:0] active_pipe;
-reg active;
-always @ (posedge clk) begin
-    if (reset) begin
-        active_pipe <= 0;
-        active <= 0;
-    end 
-    else begin
-        {active, active_pipe} <= {active_pipe, active_usb};
-    end 
-end
+// since these input control FSM states, let's sync them properly:
+cdc_simple U_active_cdc (
+    .reset      (reset),
+    .clk        (clk),
+    .data_in    (active_usb),
+    .data_out   (active),
+    .data_out_r ()
+);
+
+cdc_simple U_write_cdc (
+    .reset      (reset),
+    .clk        (clk),
+    .data_in    (single_write_usb),
+    .data_out   (single_write),
+    .data_out_r (single_write_r)
+);
+
+cdc_simple U_read_cdc (
+    .reset      (reset),
+    .clk        (clk),
+    .data_in    (single_read_usb),
+    .data_out   (single_read),
+    .data_out_r (single_read_r)
+);
+
+wire single_write_go = single_write && ~single_write_r;
+wire single_read_go = single_read && ~single_read_r;
 
 
 reg [31:0] haddr = 32'b0;
@@ -130,11 +158,24 @@ always @(posedge clk) begin
         case (state)
 
             pS_IDLE: begin
-                if (active) begin
+                single_writing <= 1'b0;
+                single_reading <= 1'b0;
+                if (single_write_go) begin
+                    single_writing <= 1'b1;
+                    haddr <= addr_start;
+                    writing <= 1'b1;
+                    state <= pS_WRITE;
+                end
+                else if (single_read_go) begin
+                    single_reading <= 1'b1;
+                    haddr <= addr_start;
+                    state <= pS_READ;
+                end
+                else if (active) begin
                     haddr <= addr_start;
                     load_lfsr <= 1'b1;
                     writing <= 1'b1;
-                    state = pS_WRITE;
+                    state <= pS_WRITE;
                 end
                 else begin
                     iteration <= 0;
@@ -142,6 +183,7 @@ always @(posedge clk) begin
                     fail <= 0;
                     error_addr <= 0;
                     read_error <= 0;
+                    writing <= 0;
                 end
                 if (clear_fail)
                     total_errors <= 0;
@@ -165,7 +207,7 @@ always @(posedge clk) begin
 
             pS_WAIT_WRITE_RESP: begin
                 if (bvalid)
-                    if (~active)
+                    if (~active || single_writing)
                         state <= pS_IDLE;
                     else if (haddr == addr_stop) begin
                         haddr <= addr_start;
@@ -197,12 +239,14 @@ always @(posedge clk) begin
                 if (rvalid) begin
                     if (rresp != 0)
                         read_error <= 1'b1;
-                    if (rdata != expected_data) begin
+                    if (single_reading)
+                        single_rdata <= rdata;
+                    else if (rdata != expected_data) begin
                         total_errors <= total_errors + 1;
                         if (total_errors == 0)
                             error_addr <= haddr;
                     end
-                    if (~active)
+                    if (~active || single_reading)
                         state <= pS_IDLE;
                     else if (haddr == addr_stop) begin
                         haddr <= addr_start;

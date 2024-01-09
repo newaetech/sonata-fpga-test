@@ -14,6 +14,7 @@
 ../hdl/simple_hyperram_rwtest.v
 ../hdl/simple_hyperram_axi_rwtest.v
 ../fpga-common/hdl/cdc_pulse.v
+../fpga-common/hdl/cdc_simple.v
 ../fpga-common/hdl/ss2.v
 ../fpga-common/hdl/uart_core.v
 ../fpga-common/hdl/crc_ss2.v

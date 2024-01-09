@@ -70,6 +70,8 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_LB_CURRENT_ADDR             8'h8b
 `define REG_BUSY_WAIT                   8'h8c
 `define REG_LB_START_ADDR               8'h8d
+`define REG_HBMC_ACTION                 8'h8e
+`define REG_HBMC_SINGLE_DATA            8'h8f
 
 // XADC:
 `define REG_XADC_DRP_ADDR               8'hc0

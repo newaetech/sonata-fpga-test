@@ -112,6 +112,12 @@ module sonata_reg #(
    output reg  [31:0]                           O_auto_stop_addr,
    output reg  [7:0]                            O_wait_value,
 
+   output wire                                  hbmc_write,
+   output wire                                  hbmc_read,
+   output reg  [31:0]                           hbmc_wdata,
+   input  wire [31:0]                           hbmc_rdata,
+   input  wire                                  hbmc_idle,
+
 // LED/DIP/misc:
    output reg                                   O_turbo,
    input  wire [5:0]                            I_analog_digital,
@@ -150,7 +156,10 @@ module sonata_reg #(
    reg  [3:0]                   reg_lb_action;
    reg  [31:0]                  reg_lb_both_addr;
    reg  [63:0]                  reg_lb_both_data;
+   reg  [1:0]                   reg_hbmc_action;
 
+   assign hbmc_write = reg_hbmc_action[0];
+   assign hbmc_read  = reg_hbmc_action[1];
 
    always @(posedge crypto_clk) begin
        done_r <= I_done & pDONE_EDGE_SENSITIVE;
@@ -217,6 +226,8 @@ module sonata_reg #(
             `REG_LB_ERROR_ADDR:         reg_read_data = I_auto_error_addr[reg_bytecnt*8 +: 8];
             `REG_LB_ITERATIONS:         reg_read_data = I_auto_iterations[reg_bytecnt*8 +: 8];
             `REG_LB_CURRENT_ADDR:       reg_read_data = I_auto_current_addr[reg_bytecnt*8 +: 8];
+            `REG_HBMC_SINGLE_DATA:      reg_read_data = hbmc_rdata[reg_bytecnt*8 +: 8];
+            `REG_HBMC_ACTION:           reg_read_data = hbmc_idle;
 
             // LED/DIP/misc:
             `REG_DIPS:                  reg_read_data = I_dips[reg_bytecnt*8 +: 8];
@@ -275,6 +286,8 @@ module sonata_reg #(
                `REG_LB_STOP_ADDR:       O_auto_stop_addr[reg_bytecnt*8 +: 8] <= write_data;
                `REG_LB_START_ADDR:      O_auto_start_addr[reg_bytecnt*8 +: 8] <= write_data;
                `REG_BUSY_WAIT:          O_wait_value <= write_data;
+               `REG_HBMC_ACTION:        reg_hbmc_action <= write_data[1:0];
+               `REG_HBMC_SINGLE_DATA:   hbmc_wdata[reg_bytecnt*8 +: 8] <= write_data;
 
                // LED/DIP test:
                `REG_LEDS:               reg_test_leds[reg_bytecnt*8 +: 8] <= write_data;
