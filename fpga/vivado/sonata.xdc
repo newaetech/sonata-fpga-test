@@ -94,6 +94,7 @@ set_property PULLTYPE PULLUP [get_ports USRSW]
 create_clock -period 40.000 -name MAINCLK -waveform {0.000 20.000} [get_nets MAINCLK]
 #create_clock -period 10.000 -name PLL_CLK1 -waveform {0.000 5.000} [get_nets PLL_CLK1]
 create_generated_clock -name progclk  [get_pins {U_progclk/U_mmcm/CLKOUT0}]
+create_generated_clock -name progclk_hr  [get_pins {U_progclk/U_mmcm_hr/CLKOUT0}]
 
 
 set_input_delay -clock MAINCLK -add_delay 0.000 [get_ports USRSW]
@@ -120,22 +121,23 @@ set imin -0.500
 set omax  0.500
 set omin -0.500
 
-# input is system synchronous
-set PROGCLK_HALF_PERIOD 10.0000
-set_input_delay -clock progclk -max [expr $PROGCLK_HALF_PERIOD + $imax]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }]
-set_input_delay -clock progclk -min [expr $PROGCLK_HALF_PERIOD - $imin]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }]
-set_input_delay -clock progclk -max [expr $PROGCLK_HALF_PERIOD + $imax]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }] -clock_fall -add_delay
-set_input_delay -clock progclk -min [expr $PROGCLK_HALF_PERIOD - $imin]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }] -clock_fall -add_delay
-
-# output is source synchronous
-set_output_delay -clock progclk -max $omax  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }]
-set_output_delay -clock progclk -min $omin  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }]
-set_output_delay -clock progclk -max $omax  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }] -clock_fall -add_delay
-set_output_delay -clock progclk -min $omin  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }] -clock_fall -add_delay
+## input is system synchronous
+#set PROGCLK_HALF_PERIOD 10.0000
+#set_input_delay -clock progclk -max [expr $PROGCLK_HALF_PERIOD + $imax]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }]
+#set_input_delay -clock progclk -min [expr $PROGCLK_HALF_PERIOD - $imin]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }]
+#set_input_delay -clock progclk -max [expr $PROGCLK_HALF_PERIOD + $imax]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }] -clock_fall -add_delay
+#set_input_delay -clock progclk -min [expr $PROGCLK_HALF_PERIOD - $imin]  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS }] -clock_fall -add_delay
+#
+## output is source synchronous
+#set_output_delay -clock progclk -max $omax  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }]
+#set_output_delay -clock progclk -min $omin  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }]
+#set_output_delay -clock progclk -max $omax  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }] -clock_fall -add_delay
+#set_output_delay -clock progclk -min $omin  [get_ports { HYPERRAM_DQ HYPERRAM_RWDS HYPERRAM_CS }] -clock_fall -add_delay
 
 
 set_clock_groups -asynchronous \
                  -group [get_clocks progclk ] \
+                 -group [get_clocks progclk_hr ] \
                  -group [get_clocks MAINCLK ]
 
 

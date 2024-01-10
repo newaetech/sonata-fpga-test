@@ -99,11 +99,14 @@ module sonata_top #(
     wire [7:0] read_data_main;
     wire [7:0] read_data_xadc;
     wire [7:0] read_data_mmcm_drp;
+    wire [7:0] read_data_mmcm_hr_drp;
     wire reg_read;
     wire reg_write;
     wire mmcm_locked;
+    wire mmcm_hr_locked;
     wire xadc_error_flag;
     wire progclk;
+    wire progclk_hr;
 
 
 `ifdef __ICARUS__
@@ -194,32 +197,17 @@ module sonata_top #(
     wire crypt_done;
     wire crypt_busy;
 
-
-    wire        lb1_wr;
-    wire        lb1_rd;
-    wire [31:0] lb1_addr;
-    wire [31:0] lb1_wr_d;
-    wire [31:0] lb1_rd_d;
-    wire        lb1_rd_rdy;
-
-    wire        manual_lb1_wr;
-    wire        manual_lb1_rd;
-    wire [31:0] manual_lb1_addr;
-    wire [31:0] manual_lb1_wr_d;
-    wire        auto_lb1_wr;
-    wire        auto_lb1_rd;
-    wire [31:0] auto_lb1_addr;
-    wire [31:0] auto_lb1_wr_d;
-
     wire        hreset;
     wire        memtest_error;
     wire        clk_90p_locked;
+    wire        clk_iserdes_locked;
     wire        hypr_busy;
-    wire        hypr_busy_stuck;
+    wire        rresp_error;
+    wire        bresp_error;
+    wire        hbmc_idle;
 
     wire        lb_manual;
     wire        auto_clear_fail;
-    wire        auto_check1;
     wire        auto_lfsr_mode;
     wire        auto_pass;
     wire        auto_fail;
@@ -231,6 +219,11 @@ module sonata_top #(
     wire [31:0] auto_addr_stop;
 
     wire [7:0]  wait_value;
+
+    wire hbmc_write;
+    wire hbmc_read;
+    wire [31:0] hbmc_wdata;
+    wire [31:0] hbmc_rdata;
 
     wire led_test_mode;
     wire led_flash_all;
@@ -244,6 +237,11 @@ module sonata_top #(
     // programmable clock Heartbeat
     reg [24:0] progclk_heartbeat;
     always @(posedge progclk) progclk_heartbeat <= progclk_heartbeat +  23'd1;
+
+    // programmable clock Heartbeat
+    reg [24:0] progclk_hr_heartbeat;
+    always @(posedge progclk_hr) progclk_hr_heartbeat <= progclk_hr_heartbeat +  23'd1;
+
 
     always @(*) begin
         if (led_test_mode) begin
@@ -267,14 +265,17 @@ module sonata_top #(
         else begin
             USRLED[0] = mainclk_heartbeat[24];
             USRLED[1] = progclk_heartbeat[24];
-            USRLED[2] = usrled;
-            USRLED[3] = hypr_busy_stuck;
+            USRLED[2] = progclk_hr_heartbeat[24];
+            USRLED[3] = rresp_error || bresp_error;
             USRLED[4] = ~clk_90p_locked;
-            USRLED[5] = reset;
-            USRLED[6] = mmcm_locked;
-            USRLED[7] = ss2_error;
-            CHERIERR[0] = xadc_error_flag;
-            CHERIERR[8:1] = 8'b0;
+            USRLED[5] = ~clk_iserdes_locked;
+            USRLED[6] = ~mmcm_locked;
+            USRLED[7] = ~mmcm_hr_locked;
+            CHERIERR[0] = ss2_error;
+            CHERIERR[1] = xadc_error_flag;
+            CHERIERR[2] = usrled;
+            CHERIERR[3] = ~hbmc_idle;
+            CHERIERR[8:4] = 8'b0;
             LED_LEGACY = 1'b0;
             LED_CHERI = 1'b0;
             LED_HALTED = 1'b0;
@@ -282,7 +283,7 @@ module sonata_top #(
         end
     end
 
-    assign read_data = read_data_main | read_data_xadc | read_data_mmcm_drp;
+    assign read_data = read_data_main | read_data_xadc | read_data_mmcm_drp | read_data_mmcm_hr_drp;
 
     wire [15:0] all_switches = {USRSW, NAVSW, SELSW};
 
@@ -298,7 +299,7 @@ module sonata_top #(
        .reset_i                 (reset),
        .crypto_clk              (progclk),
        .usb_clk                 (mainclk_buf), 
-       .hclk                    (progclk),
+       .hclk                    (progclk_hr),
        .reg_address             (reg_address[7:0]),
        .reg_bytecnt             (reg_bytecnt), 
        .read_data               (read_data_main), 
@@ -308,6 +309,7 @@ module sonata_top #(
        .reg_addrvalid           (1'b1),
 
        .mmcm_locked             (mmcm_locked),
+       .mmcm_hr_locked          (mmcm_hr_locked),
 
        .I_textout               (128'b0),               // unused
        .I_cipherout             (crypt_cipherin),
@@ -324,14 +326,13 @@ module sonata_top #(
        .core_sel                (core_sel),
 
        .reg_hreset              (hreset         ),
-       .hypr1_busy              (hypr_busy_stuck),
-       .hypr2_busy              (0),
+       .rresp_error             (rresp_error),
+       .bresp_error             (bresp_error),
        .clk_90p_locked          (clk_90p_locked ),
+       .clk_iserdes_locked      (clk_iserdes_locked ),
 
        .O_lb_manual             (lb_manual       ),
        .O_auto_clear_fail       (auto_clear_fail ),
-       .O_auto_check1           (auto_check1 ),
-       .O_auto_check2           (),
        .O_auto_lfsr_mode        (auto_lfsr_mode ),
        .I_auto_pass             (auto_pass       ),
        .I_auto_fail             (auto_fail       ),
@@ -343,19 +344,11 @@ module sonata_top #(
        .O_auto_stop_addr        (auto_addr_stop  ),
        .O_wait_value            (wait_value  ),
 
-       .lb1_wr                  (manual_lb1_wr         ),
-       .lb1_rd                  (manual_lb1_rd         ),
-       .lb1_addr                (manual_lb1_addr       ),
-       .lb1_wr_d                (manual_lb1_wr_d       ),
-       .lb1_rd_d                (lb1_rd_d       ),
-       .lb1_rd_rdy              (lb1_rd_rdy     ),
-
-       .lb2_wr                  (),
-       .lb2_rd                  (),
-       .lb2_addr                (),
-       .lb2_wr_d                (),
-       .lb2_rd_d                (0),
-       .lb2_rd_rdy              (0),
+       .hbmc_write              (hbmc_write     ),
+       .hbmc_read               (hbmc_read      ),
+       .hbmc_wdata              (hbmc_wdata     ),
+       .hbmc_rdata              (hbmc_rdata     ),
+       .hbmc_idle               (hbmc_idle      ),
 
        .O_turbo                 (FPGAIO_TURBO),
        .I_analog_digital        (ANALOG_DIGITAL),
@@ -372,11 +365,14 @@ module sonata_top #(
        .reset_i          (reset),
        .clk_usb          (mainclk_buf),
        .progclk          (progclk),
+       .progclk_hr       (progclk_hr),
        .shutdown         (xadc_error_flag),
        .mmcm_locked      (mmcm_locked),
+       .mmcm_hr_locked   (mmcm_hr_locked),
        .reg_address      (reg_address[7:0]), 
        .reg_bytecnt      (reg_bytecnt), 
        .reg_datao        (read_data_mmcm_drp),
+       .reg_datao_hr     (read_data_mmcm_hr_drp),
        .reg_datai        (write_data), 
        .reg_read         (reg_read), 
        .reg_write        (reg_write)
@@ -418,61 +414,115 @@ module sonata_top #(
 
    endgenerate
 
+    wire [31:0] awaddr;
+    wire awvalid;
+    wire awready;
 
-   assign lb1_wr        = (lb_manual)? manual_lb1_wr : auto_lb1_wr;
-   assign lb1_rd        = (lb_manual)? manual_lb1_rd : auto_lb1_rd;
-   assign lb1_addr      = (lb_manual)? manual_lb1_addr : auto_lb1_addr;
-   assign lb1_wr_d      = (lb_manual)? manual_lb1_wr_d : auto_lb1_wr_d;
+    // write data:
+    wire [31:0] wdata;
+    wire wvalid;
+    wire wready;
 
+    // write response:
+    wire [1:0] bresp;
+    wire bvalid;
+    wire bready;
 
-    hyperram_wrapper U_hyperram_wrapper (
-        .hreset                         (hreset),
-        .hclk                           (progclk),
-        .error                          (),
-        .clk_90p_locked                 (clk_90p_locked),
+    // read address:
+    wire [31:0] araddr;
+    wire arvalid;
+    wire arready;
 
-        .lb1_wr                         (lb1_wr         ),
-        .lb1_rd                         (lb1_rd         ),
-        .lb1_addr                       (lb1_addr       ),
-        .lb1_wr_d                       (lb1_wr_d       ),
-        .lb1_rd_d                       (lb1_rd_d       ),
-        .lb1_rd_rdy                     (lb1_rd_rdy     ),
+    // read data:
+    wire [31:0] rdata;
+    wire [1:0] rresp;
+    wire rvalid;
+    wire rready;
 
-        .lb2_wr                         (0),
-        .lb2_rd                         (0),
-        .lb2_addr                       (0),
-        .lb2_wr_d                       (0),
-        .lb2_rd_d                       (),
-        .lb2_rd_rdy                     (),
+    wire axi_clk = progclk; // NOTE: alternatively, fixed 25 MHz mainclk_buf
 
-        .hypr1_dq                       (HYPERRAM_DQ    ),
-        .hypr1_rwds                     (HYPERRAM_RWDS  ),
-        .hypr1_ckp                      (HYPERRAM_CKP   ),
-        .hypr1_ckn                      (HYPERRAM_CKN   ),
-        .hypr1_rst_l                    (HYPERRAM_nRST  ),
-        .hypr1_cs_l                     (HYPERRAM_CS    ),
-        .hypr1_busy                     (hypr_busy      ),
-
-        .hypr2_dq                       (),
-        .hypr2_rwds                     (),
-        .hypr2_ckp                      (),
-        .hypr2_ckn                      (),
-        .hypr2_rst_l                    (),
-        .hypr2_cs_l                     (),
-        .hypr2_busy                     (),
-
-        .hypr1_busy_stuck               (hypr_busy_stuck ),
-        .hypr2_busy_stuck               ()
-
+    // synchronize hyperram reset to hyperram clock for stability(?):
+    wire hr_reset;
+    cdc_simple U_hr_reset_cdc (
+        .reset      (reset),
+        .clk        (progclk_hr),
+        .data_in    (hreset),
+        .data_out   (hr_reset),
+        .data_out_r ()
     );
 
-    simple_hyperram_rwtest U_hyperram_test(
-        .clk                            (progclk        ),
-        .reset                          (reset          ),
+    hyperram_hbmc_wrapper U_hyperram_wrapper (
+        .hreset                 (hr_reset),
+        .hclk                   (progclk_hr),
+
+        .clk_90p_locked         (clk_90p_locked),
+        .clk_iserdes_locked     (clk_iserdes_locked),
+
+        .s_axi_aclk             (axi_clk),
+        .s_axi_aresetn          (~hr_reset),
+
+        .s_axi_awid             (0),
+        .s_axi_awaddr           (awaddr),
+        .s_axi_awlen            (0),
+        .s_axi_awsize           (4),
+        .s_axi_awburst          (0),
+        .s_axi_awlock           (0),
+        .s_axi_awregion         (0),
+        .s_axi_awcache          (0),
+        .s_axi_awqos            (0),
+        .s_axi_awprot           (0),
+        .s_axi_awvalid          (awvalid),
+        .s_axi_awready          (awready),
+
+        .s_axi_wdata            (wdata  ),
+        .s_axi_wstrb            (4'b1111),
+        .s_axi_wlast            (1'b1   ),
+        .s_axi_wvalid           (wvalid ),
+        .s_axi_wready           (wready ),
+
+        .s_axi_bid              (),             // unused (constant)
+        .s_axi_bresp            (bresp  ),
+        .s_axi_bvalid           (bvalid ),
+        .s_axi_bready           (bready ),
+
+        .s_axi_arid             (0),
+        .s_axi_araddr           (araddr),
+        .s_axi_arlen            (0),
+        .s_axi_arsize           (4),
+        .s_axi_arburst          (0),
+        .s_axi_arlock           (0),
+        .s_axi_arregion         (0),
+        .s_axi_arcache          (0),
+        .s_axi_arqos            (0),
+        .s_axi_arprot           (0),
+        .s_axi_arvalid          (arvalid),
+        .s_axi_arready          (arready),
+
+        .s_axi_rid              (),             // unused (constant)
+        .s_axi_rdata            (rdata  ),
+        .s_axi_rresp            (rresp  ),
+        .s_axi_rlast            (),             // unused (constant)
+        .s_axi_rvalid           (rvalid ),
+        .s_axi_rready           (rready ),
+
+        .hypr_dq                (HYPERRAM_DQ  ),
+        .hypr_rwds              (HYPERRAM_RWDS),
+        .hypr_ckp               (HYPERRAM_CKP ),
+        .hypr_ckn               (HYPERRAM_CKN ),
+        .hypr_rst_l             (HYPERRAM_nRST),
+        .hypr_cs_l              (HYPERRAM_CS  ),
+        .hypr_busy              (hypr_busy    )
+    );
+
+    simple_hyperram_axi_rwtest U_hyperram_test(
+        .clk                            (axi_clk        ),
+        .reset                          (hr_reset       ),
         .active_usb                     (~lb_manual     ),
+        .single_write_usb               (hbmc_write     ),
+        .single_read_usb                (hbmc_read      ),
+        .single_wdata                   (hbmc_wdata     ),
+        .single_rdata                   (hbmc_rdata     ),
         .clear_fail                     (auto_clear_fail),
-        .check1                         (auto_check1 ),
-        .check2                         (1'b0 ),
         .lfsr_mode                      (auto_lfsr_mode ),
         .pass                           (auto_pass      ),
         .fail                           (auto_fail      ),
@@ -482,26 +532,32 @@ module sonata_top #(
         .error_addr                     (auto_error_addr),
         .addr_start                     (auto_addr_start ),
         .addr_stop                      (auto_addr_stop ),
-        .wait_value                     (wait_value     ),
-                                                     
-        .lb1_wr                         (auto_lb1_wr    ),
-        .lb1_rd                         (auto_lb1_rd    ),
-        .lb1_addr                       (auto_lb1_addr  ),
-        .lb1_wr_d                       (auto_lb1_wr_d  ),
-        .lb1_rd_d                       (lb1_rd_d       ),
-        .lb1_rd_rdy                     (lb1_rd_rdy     ),
-        .hr1_busy                       (hypr_busy     ),
-        .hr1_busy_stuck                 (hypr_busy_stuck),
+        .rresp_error                    (rresp_error ),
+        .bresp_error                    (bresp_error ),
+        .idle                           (hbmc_idle),
 
-        .lb2_wr                         (),
-        .lb2_rd                         (),
-        .lb2_addr                       (),
-        .lb2_wr_d                       (),
-        .lb2_rd_d                       (0),
-        .lb2_rd_rdy                     (1'b1),
-        .hr2_busy                       (0),
-        .hr2_busy_stuck                 ()
+        .awaddr                         (awaddr  ),
+        .awvalid                        (awvalid ),
+        .awready                        (awready ),
+                                                
+        .wdata                          (wdata   ),
+        .wvalid                         (wvalid  ),
+        .wready                         (wready  ),
+                                                
+        .bresp                          (bresp   ),
+        .bvalid                         (bvalid  ),
+        .bready                         (bready  ),
+                                                
+        .araddr                         (araddr  ),
+        .arvalid                        (arvalid ),
+        .arready                        (arready ),
+                                                
+        .rdata                          (rdata   ),
+        .rresp                          (rresp   ),
+        .rvalid                         (rvalid  ),
+        .rready                         (rready  )
     );
+
 
    xadc #(
       .pBYTECNT_SIZE    (pBYTECNT_SIZE)
@@ -518,44 +574,6 @@ module sonata_top #(
       .reg_write        (reg_write), 
       .xadc_error       (xadc_error_flag)
    ); 
-
-    /*
-`ifdef ILA_RAW_HR
-    wire la_clk;
-    wire la_locked;
-  la_clk_wiz instance_name
-  (
-    // Clock out ports
-    .clk_out1   (la_clk),
-    .reset      (reset),
-    .locked     (la_locked),
-    .clk_in1    (ext_clk)
-  );
-
-    ila_raw_hw U_ila_raw_hr1 (
-       .clk            (la_clk),
-       .probe0         (hypr1_dq),              // 7:0
-       .probe1         (hypr1_rwds),
-       .probe2         (hypr1_ckp),
-       .probe3         (hypr1_ckn),
-       .probe4         (hypr1_rst_l),
-       .probe5         (hypr1_cs_l),
-       .probe6         (hypr1_busy_stuck)
-    );
-
-    ila_raw_hw U_ila_raw_hr2 (
-       .clk            (la_clk),
-       .probe0         (hypr2_dq),              // 7:0
-       .probe1         (hypr2_rwds),
-       .probe2         (hypr2_ckp),
-       .probe3         (hypr2_ckn),
-       .probe4         (hypr2_rst_l),
-       .probe5         (hypr2_cs_l),
-       .probe6         (hypr2_busy_stuck)
-    );
-
-`endif
-    */
 
 
 endmodule

@@ -56,12 +56,8 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_AES_ALWAYS_ON               8'h12
 
 // hyperram:
-`define REG_LB_ACTION                   8'h80
-`define REG_LB_DATA1                    8'h81
-`define REG_LB_ADDR                     8'h82
 `define REG_HYPER_STATUS                8'h83
 `define REG_HYPER_RESET                 8'h84
-`define REG_LB_DATA2                    8'h85
 `define REG_LB_MANUAL                   8'h86
 `define REG_LB_ERRORS                   8'h87
 `define REG_LB_ERROR_ADDR               8'h88
@@ -70,14 +66,21 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_LB_CURRENT_ADDR             8'h8b
 `define REG_BUSY_WAIT                   8'h8c
 `define REG_LB_START_ADDR               8'h8d
+`define REG_HBMC_ACTION                 8'h8e
+`define REG_HBMC_SINGLE_DATA            8'h8f
 
 // XADC:
 `define REG_XADC_DRP_ADDR               8'hc0
 `define REG_XADC_DRP_DATA               8'hc1
 `define REG_XADC_STAT                   8'hc2
 
-// MMCM DRP:
+// MMCM DRP (AES):
 `define REG_MMCM_DRP_ADDR               8'hd0
 `define REG_MMCM_DRP_DATA               8'hd1
 `define REG_MMCM_DRP_RESET              8'hd2
+
+// MMCM DRP (HyperRAM):
+`define REG_MMCM_HR_DRP_ADDR            8'he0
+`define REG_MMCM_HR_DRP_DATA            8'he1
+`define REG_MMCM_HR_DRP_RESET           8'he2
 
