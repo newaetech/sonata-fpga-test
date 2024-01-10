@@ -116,11 +116,11 @@ module sonata_progclk #(
    wire mmcm_clkfb;
    wire mmcm_hr_clkfb;
 
-   // Set to 67 MHz default for Vivado timing closure. Input clock is 25 MHz:
+   // Set to 100 MHz default for Vivado timing closure. Input clock is 25 MHz:
    MMCME2_ADV #(
       .BANDWIDTH                    ("OPTIMIZED"), // Jitter programming (OPTIMIZED, HIGH, LOW)
       .CLKFBOUT_MULT_F              (48.0), // Multiply value for all CLKOUT (2.000-64.000)
-      .CLKOUT0_DIVIDE_F             (18.0),
+      .CLKOUT0_DIVIDE_F             (12.0),
       .CLKFBOUT_PHASE               (0.0), // Phase offset in degrees of CLKFB (-360.000-360.000).
       .CLKIN1_PERIOD                (40.0), // 25 MHz
       .CLKOUT0_DUTY_CYCLE           (0.5),
@@ -182,6 +182,8 @@ module sonata_progclk #(
       //.CLKOUT0_DIVIDE_F             (6.0), // 200 MHz
       //.CLKOUT0_DIVIDE_F             (7.0), // 170 MHz
       .CLKOUT0_DIVIDE_F             (8.0), // 150 MHz
+      //.CLKFBOUT_MULT_F              (60.0),
+      //.CLKOUT0_DIVIDE_F             (9.0), // 166 MHz
       .CLKFBOUT_PHASE               (0.0), // Phase offset in degrees of CLKFB (-360.000-360.000).
       .CLKIN1_PERIOD                (40.0), // 25 MHz
       .CLKOUT0_DUTY_CYCLE           (0.5),

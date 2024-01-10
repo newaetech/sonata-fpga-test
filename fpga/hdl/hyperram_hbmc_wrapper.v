@@ -28,7 +28,6 @@ module hyperram_hbmc_wrapper (
     input wire                          hclk,
 
     // status/debug:
-    output wire                         error, // TODO?
     output wire                         clk_90p_locked,
     output wire                         clk_iserdes_locked,
 
@@ -110,7 +109,7 @@ module hyperram_hbmc_wrapper (
         wire clk_90p_fb;
         wire clk_iserdes_fb;
     `ifdef ULTRASCALE
-        // TODO: optimize mul/div settings for 200 MHz clock (or whatever we end up using)
+        // optimize mul/div settings for 200 MHz clock (or whatever we end up using)?
         PLLE3_BASE #(
             .CLKFBOUT_MULT      (16),
             .CLKFBOUT_PHASE     (0),
@@ -134,7 +133,7 @@ module hyperram_hbmc_wrapper (
         );
 
     `else
-        // TODO: assuming 200 MHz input clock; drive to max VCO (1600) so that slower clocks can also work:
+        // NOTE: these mul/div settings work with input clock from 100 to 200 MHz:
         PLLE2_BASE #(
             .CLKFBOUT_MULT      (8),
             .CLKFBOUT_PHASE     (0),
@@ -157,6 +156,8 @@ module hyperram_hbmc_wrapper (
             .CLKFBOUT           (clk_90p_fb)
         );
 
+        // NOTE: these mul/div settings work with input clock from 133 to 300 MHz:
+        // generates 3x clock for SERDES:
         PLLE2_BASE #(
             .CLKFBOUT_MULT      (6),
             .CLKFBOUT_PHASE     (0),
@@ -187,7 +188,7 @@ module hyperram_hbmc_wrapper (
     OpenHBMC U_HBMC (
       .clk_hbmc_0           (hclk           ),      // input wire clk_hbmc_0
       .clk_hbmc_90          (clk_90p        ),      // input wire clk_hbmc_90
-      .clk_iserdes          (clk_iserdes    ),      // input wire clk_iserdes *** TODO: needs 3x hclk
+      .clk_iserdes          (clk_iserdes    ),      // input wire clk_iserdes
       .s_axi_aclk           (s_axi_aclk     ),      // input wire s_axi_aclk
       .s_axi_aresetn        (s_axi_aresetn  ),      // input wire s_axi_aresetn
       .s_axi_awid           (s_axi_awid     ),      // input wire [0 : 0] s_axi_awid

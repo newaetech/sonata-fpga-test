@@ -490,16 +490,16 @@ module sonata_top #(
     wire rvalid;
     wire rready;
 
+    wire axi_clk = progclk; // NOTE: alternatively, fixed 25 MHz mainclk_buf
+
     hyperram_hbmc_wrapper U_hyperram_wrapper (
         .hreset                 (hreset),
         .hclk                   (progclk_hr),
 
-        .error                  (),
         .clk_90p_locked         (clk_90p_locked),
         .clk_iserdes_locked     (clk_iserdes_locked),
 
-        //.s_axi_aclk             (progclk_hr),
-        .s_axi_aclk             (mainclk_buf),
+        .s_axi_aclk             (axi_clk),
         .s_axi_aresetn          (~hreset),
 
         .s_axi_awid             (0),
@@ -556,8 +556,7 @@ module sonata_top #(
     );
 
     simple_hyperram_axi_rwtest U_hyperram_test(
-        //.clk                            (progclk_hr     ),
-        .clk                            (mainclk_buf    ),
+        .clk                            (axi_clk        ),
         .reset                          (hreset         ),
         .active_usb                     (~lb_manual     ),
         .single_write_usb               (hbmc_write     ),
