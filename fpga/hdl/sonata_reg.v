@@ -103,7 +103,7 @@ module sonata_reg #(
    input  wire                                  hbmc_idle,
 
 // LED/DIP/misc:
-   output reg                                   O_turbo,
+   input  wire                                  I_turbo,
    input  wire [5:0]                            I_analog_digital,
    input  wire [15:0]                           I_dips,
    output wire [20:0]                           O_test_leds,
@@ -213,6 +213,7 @@ module sonata_reg #(
             // LED/DIP/misc:
             `REG_DIPS:                  reg_read_data = I_dips[reg_bytecnt*8 +: 8];
             `REG_ANALOG_DIGITAL:        reg_read_data = I_analog_digital;
+            `REG_TURBO:                 reg_read_data = I_turbo;
 
             default:                    reg_read_data = 0;
          endcase
@@ -270,8 +271,6 @@ module sonata_reg #(
                // multiple AES cores:
                `REG_AES_CORES_EN:       cores_en[reg_bytecnt*8 +: 8] <= write_data;
                `REG_AES_CORE_SEL:       core_sel <= write_data;
-
-               `REG_TURBO:              O_turbo <= write_data[0];
 
             endcase
          end

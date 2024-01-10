@@ -350,7 +350,7 @@ module sonata_top #(
        .hbmc_rdata              (hbmc_rdata     ),
        .hbmc_idle               (hbmc_idle      ),
 
-       .O_turbo                 (FPGAIO_TURBO),
+       .I_turbo                 (FPGAIO_TURBO),
        .I_analog_digital        (ANALOG_DIGITAL),
        .I_dips                  (all_switches),
        .O_led_test_mode         (led_test_mode),
