@@ -76,30 +76,14 @@ module sonata_reg #(
    output reg  [63:0]                           cores_en,
 
 // Hyperram:
-   output wire                                  lb1_wr,
-   output wire                                  lb1_rd,
-   output wire [31:0]                           lb1_addr,
-   output wire [31:0]                           lb1_wr_d,
-   input  wire [31:0]                           lb1_rd_d,
-   input  wire                                  lb1_rd_rdy,
-
-   output wire                                  lb2_wr,
-   output wire                                  lb2_rd,
-   output wire [31:0]                           lb2_addr,
-   output wire [31:0]                           lb2_wr_d,
-   input  wire [31:0]                           lb2_rd_d,
-   input  wire                                  lb2_rd_rdy,
-
    output reg                                   reg_hreset,
 
-   input  wire                                  hypr1_busy,
-   input  wire                                  hypr2_busy,
+   input  wire                                  rresp_error,
+   input  wire                                  bresp_error,
    input  wire                                  clk_90p_locked,
    input  wire                                  clk_iserdes_locked,
 
    output reg                                   O_lb_manual,
-   output reg                                   O_auto_check1,
-   output reg                                   O_auto_check2,
    output reg                                   O_auto_lfsr_mode,
    output reg                                   O_auto_clear_fail,
    input  wire                                  I_auto_pass,
@@ -218,10 +202,7 @@ module sonata_reg #(
 
             // Hyperram:
             `REG_LB_MANUAL:             reg_read_data = {7'b0, O_lb_manual};
-            `REG_LB_DATA1:              reg_read_data = reg_lb_both_rd_d[reg_bytecnt*8 +: 8];
-            `REG_LB_DATA2:              reg_read_data = reg_lb_both_rd_d[(reg_bytecnt+4)*8 +: 8];
-            //`REG_HYPER_STATUS:          reg_read_data = {3'b0, I_auto_pass, I_auto_fail, hypr2_busy, hypr1_busy, clk_90p_locked};
-            `REG_HYPER_STATUS:          reg_read_data = {2'b0, clk_iserdes_locked, I_auto_pass, I_auto_fail, hypr2_busy, hypr1_busy, clk_90p_locked};
+            `REG_HYPER_STATUS:          reg_read_data = {2'b0, clk_iserdes_locked, I_auto_pass, I_auto_fail, bresp_error, rresp_error, clk_90p_locked};
             `REG_LB_ERRORS:             reg_read_data = I_auto_errors[reg_bytecnt*8 +: 8];
             `REG_LB_ERROR_ADDR:         reg_read_data = I_auto_error_addr[reg_bytecnt*8 +: 8];
             `REG_LB_ITERATIONS:         reg_read_data = I_auto_iterations[reg_bytecnt*8 +: 8];
@@ -259,8 +240,6 @@ module sonata_reg #(
          reg_crypt_go_pulse <= 1'b0;
          O_lb_manual <= 1;
          O_auto_clear_fail <= 0;
-         O_auto_check1 <= 1;
-         O_auto_check2 <= 1;
          O_auto_lfsr_mode <= 1;
          reg_test_leds <= 0;
          O_wait_value <= 4;
@@ -278,11 +257,7 @@ module sonata_reg #(
                `REG_AES_ALWAYS_ON:      aes_always_on <= write_data[0];
 
                // Hyperram:
-               `REG_LB_DATA1:           reg_lb_both_data[reg_bytecnt*8 +: 8] <= write_data;
-               `REG_LB_DATA2:           reg_lb_both_data[(reg_bytecnt+4)*8 +: 8] <= write_data;
-               `REG_LB_ADDR:            reg_lb_both_addr[reg_bytecnt*8 +: 8] <= write_data;
-               `REG_LB_ACTION:          reg_lb_action <= write_data[3:0];
-               `REG_LB_MANUAL:          {O_auto_lfsr_mode, O_auto_check1, O_auto_check2, O_auto_clear_fail, O_lb_manual} <= write_data[4:0];
+               `REG_LB_MANUAL:          {O_auto_lfsr_mode, O_auto_clear_fail, O_lb_manual} <= write_data[2:0];
                `REG_LB_STOP_ADDR:       O_auto_stop_addr[reg_bytecnt*8 +: 8] <= write_data;
                `REG_LB_START_ADDR:      O_auto_start_addr[reg_bytecnt*8 +: 8] <= write_data;
                `REG_BUSY_WAIT:          O_wait_value <= write_data;
@@ -333,84 +308,6 @@ module sonata_reg #(
 
 
 
-   // no need to allow for different *LB* addressing:
-   assign lb1_addr = reg_lb_both_addr;
-   assign lb2_addr = reg_lb_both_addr;
-
-   assign lb1_wr_d = reg_lb_both_data[31:0];
-   assign lb2_wr_d = reg_lb_both_data[63:32];
-
-   reg action_pre;
-   reg action_pre_r;
-
-   wire reg_hypr1_wr_en = reg_lb_action[0];
-   wire reg_hypr1_rd_en = reg_lb_action[1];
-   wire reg_hypr2_wr_en = reg_lb_action[2];
-   wire reg_hypr2_rd_en = reg_lb_action[3];
-
-   reg lb1_wr_usb;
-   reg lb1_rd_usb;
-   reg lb2_wr_usb;
-   reg lb2_rd_usb;
-
-   always @(posedge usb_clk) begin
-       action_pre_r <= action_pre;
-       if ((reg_address == `REG_LB_ADDR) && (reg_bytecnt == 3))
-           action_pre <= 1'b1;
-       else
-           action_pre <= 1'b0;
-       if (action_pre && ~action_pre_r) begin
-           lb1_wr_usb <= reg_hypr1_wr_en;
-           lb1_rd_usb <= reg_hypr1_rd_en;
-           lb2_wr_usb <= reg_hypr2_wr_en;
-           lb2_rd_usb <= reg_hypr2_rd_en;
-       end
-       else begin
-           lb1_wr_usb <= 1'b0;
-           lb1_rd_usb <= 1'b0;
-           lb2_wr_usb <= 1'b0;
-           lb2_rd_usb <= 1'b0;
-       end
-   end
-
-   cdc_pulse U_lb1w_pulse (
-      .reset_i       (reset_i),
-      .src_clk       (usb_clk),
-      .src_pulse     (lb1_wr_usb),
-      .dst_clk       (hclk),
-      .dst_pulse     (lb1_wr)
-   );
-   cdc_pulse U_lb1r_pulse (
-      .reset_i       (reset_i),
-      .src_clk       (usb_clk),
-      .src_pulse     (lb1_rd_usb),
-      .dst_clk       (hclk),
-      .dst_pulse     (lb1_rd)
-   );
-   cdc_pulse U_lb2w_pulse (
-      .reset_i       (reset_i),
-      .src_clk       (usb_clk),
-      .src_pulse     (lb2_wr_usb),
-      .dst_clk       (hclk),
-      .dst_pulse     (lb2_wr)
-   );
-   cdc_pulse U_lb2r_pulse (
-      .reset_i       (reset_i),
-      .src_clk       (usb_clk),
-      .src_pulse     (lb2_rd_usb),
-      .dst_clk       (hclk),
-      .dst_pulse     (lb2_rd)
-   );
-
-   always @(posedge hclk) begin
-       // TODO: can *rd_rdy be sufficiently delayed that the host would need to check for it?
-       if (lb1_rd_rdy)
-           reg_lb_both_rd_d[31:0] <= lb1_rd_d;
-       if (lb2_rd_rdy)
-           reg_lb_both_rd_d[63:32] <= lb2_rd_d;
-   end
-
-
    `ifdef ILA_REG
        ila_reg U_reg_ila (
 	.clk            (usb_clk),                      // input wire clk
@@ -441,35 +338,6 @@ module sonata_reg #(
        );
    `endif
 
-
-   `ifdef ILA_HYPERRAM_REG
-       ila_hyperram_reg U_ila_hyperram_reg (
-           .clk         (hclk        ),
-           .probe0      (lb1_wr      ),
-           .probe1      (lb1_rd      ),
-           .probe2      (lb1_addr    ),         // 31:0
-           .probe3      (lb1_wr_d    ),         // 31:0
-           .probe4      (lb1_rd_d    ),         // 31:0
-           .probe5      (lb1_rd_rdy  ),
-
-           .probe6      (reg_address ),         // 7:0
-           .probe7      (reg_bytecnt ),         // 6:0
-           .probe8      (read_data   ),         // 7:0
-           .probe9      (write_data  ),         // 7:0
-           .probe10     (reg_read    ),
- 	   .probe11     (reg_write   ),
-
-           .probe12     (lb2_wr      ),
-           .probe13     (lb2_rd      ),
-           .probe14     (lb2_addr    ),         // 31:0
-           .probe15     (lb2_wr_d    ),         // 31:0
-           .probe16     (lb2_rd_d    ),         // 31:0
-           .probe17     (lb2_rd_rdy  ),
-
-           .probe18     (1'b0        ),  
-           .probe19     (reg_lb_action)         // 3:0
-       );                            
-   `endif
 
 
    `ifndef __ICARUS__

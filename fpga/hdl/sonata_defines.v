@@ -56,12 +56,8 @@ either expressed or implied, of NewAE Technology Inc.
 `define REG_AES_ALWAYS_ON               8'h12
 
 // hyperram:
-`define REG_LB_ACTION                   8'h80
-`define REG_LB_DATA1                    8'h81
-`define REG_LB_ADDR                     8'h82
 `define REG_HYPER_STATUS                8'h83
 `define REG_HYPER_RESET                 8'h84
-`define REG_LB_DATA2                    8'h85
 `define REG_LB_MANUAL                   8'h86
 `define REG_LB_ERRORS                   8'h87
 `define REG_LB_ERROR_ADDR               8'h88

@@ -43,7 +43,8 @@ module simple_hyperram_axi_rwtest (
     output reg  [31:0]                  error_addr,
     input  wire [31:0]                  addr_start,
     input  wire [31:0]                  addr_stop,
-    output reg                          read_error,
+    output reg                          rresp_error,
+    output reg                          bresp_error,
     input  wire [31:0]                  single_wdata,
     output reg  [31:0]                  single_rdata,
     output wire                         idle,
@@ -182,7 +183,8 @@ always @(posedge clk) begin
                     pass <= 0;
                     fail <= 0;
                     error_addr <= 0;
-                    read_error <= 0;
+                    rresp_error <= 0;
+                    bresp_error <= 0;
                     writing <= 0;
                 end
                 if (clear_fail)
@@ -207,6 +209,8 @@ always @(posedge clk) begin
 
             pS_WAIT_WRITE_RESP: begin
                 if (bvalid)
+                    if (bresp != 0)
+                        bresp_error <= 1'b1;
                     if (~active || single_writing)
                         state <= pS_IDLE;
                     else if (haddr == addr_stop) begin
@@ -238,7 +242,7 @@ always @(posedge clk) begin
             pS_WAIT_READ_RESP: begin
                 if (rvalid) begin
                     if (rresp != 0)
-                        read_error <= 1'b1;
+                        rresp_error <= 1'b1;
                     if (single_reading)
                         single_rdata <= rdata;
                     else if (rdata != expected_data) begin
@@ -297,7 +301,7 @@ ila_hyperram_axi_test U_ila_hyperram_test (
 	.probe2         (fail               ),
 	.probe3         (state              ), // 2:0
 	.probe4         (iteration          ), // 15:0
-	.probe5         (read_error         ),
+	.probe5         (rresp_error        ),
 	.probe6         (total_errors       ), // 31:0
 	.probe7         (expected_data      ), // 31:0
 	.probe8         (writing            ),

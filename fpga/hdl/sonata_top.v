@@ -197,34 +197,17 @@ module sonata_top #(
     wire crypt_done;
     wire crypt_busy;
 
-
-    wire        lb1_wr;
-    wire        lb1_rd;
-    wire [31:0] lb1_addr;
-    wire [31:0] lb1_wr_d;
-    wire [31:0] lb1_rd_d;
-    wire        lb1_rd_rdy;
-
-    wire        manual_lb1_wr;
-    wire        manual_lb1_rd;
-    wire [31:0] manual_lb1_addr;
-    wire [31:0] manual_lb1_wr_d;
-    wire        auto_lb1_wr;
-    wire        auto_lb1_rd;
-    wire [31:0] auto_lb1_addr;
-    wire [31:0] auto_lb1_wr_d;
-
     wire        hreset;
     wire        memtest_error;
     wire        clk_90p_locked;
     wire        clk_iserdes_locked;
     wire        hypr_busy;
-    wire        hypr_busy_stuck;
+    wire        rresp_error;
+    wire        bresp_error;
     wire        hbmc_idle;
 
     wire        lb_manual;
     wire        auto_clear_fail;
-    wire        auto_check1;
     wire        auto_lfsr_mode;
     wire        auto_pass;
     wire        auto_fail;
@@ -283,7 +266,7 @@ module sonata_top #(
             USRLED[0] = mainclk_heartbeat[24];
             USRLED[1] = progclk_heartbeat[24];
             USRLED[2] = progclk_hr_heartbeat[24];
-            USRLED[3] = hypr_busy_stuck;
+            USRLED[3] = rresp_error || bresp_error;
             USRLED[4] = ~clk_90p_locked;
             USRLED[5] = ~clk_iserdes_locked;
             USRLED[6] = ~mmcm_locked;
@@ -343,15 +326,13 @@ module sonata_top #(
        .core_sel                (core_sel),
 
        .reg_hreset              (hreset         ),
-       .hypr1_busy              (hypr_busy_stuck),
-       .hypr2_busy              (0),
+       .rresp_error             (rresp_error),
+       .bresp_error             (bresp_error),
        .clk_90p_locked          (clk_90p_locked ),
        .clk_iserdes_locked      (clk_iserdes_locked ),
 
        .O_lb_manual             (lb_manual       ),
        .O_auto_clear_fail       (auto_clear_fail ),
-       .O_auto_check1           (auto_check1 ),
-       .O_auto_check2           (),
        .O_auto_lfsr_mode        (auto_lfsr_mode ),
        .I_auto_pass             (auto_pass       ),
        .I_auto_fail             (auto_fail       ),
@@ -362,20 +343,6 @@ module sonata_top #(
        .O_auto_start_addr       (auto_addr_start ),
        .O_auto_stop_addr        (auto_addr_stop  ),
        .O_wait_value            (wait_value  ),
-
-       .lb1_wr                  (manual_lb1_wr         ),
-       .lb1_rd                  (manual_lb1_rd         ),
-       .lb1_addr                (manual_lb1_addr       ),
-       .lb1_wr_d                (manual_lb1_wr_d       ),
-       .lb1_rd_d                (lb1_rd_d       ),
-       .lb1_rd_rdy              (lb1_rd_rdy     ),
-
-       .lb2_wr                  (),
-       .lb2_rd                  (),
-       .lb2_addr                (),
-       .lb2_wr_d                (),
-       .lb2_rd_d                (0),
-       .lb2_rd_rdy              (0),
 
        .hbmc_write              (hbmc_write     ),
        .hbmc_read               (hbmc_read      ),
@@ -447,24 +414,6 @@ module sonata_top #(
 
    endgenerate
 
-   assign lb1_wr        = (lb_manual)? manual_lb1_wr : auto_lb1_wr;
-   assign lb1_rd        = (lb_manual)? manual_lb1_rd : auto_lb1_rd;
-   assign lb1_addr      = (lb_manual)? manual_lb1_addr : auto_lb1_addr;
-   assign lb1_wr_d      = (lb_manual)? manual_lb1_wr_d : auto_lb1_wr_d;
-
-   /* AXI statics:
-   ID = 0
-   LEN = 0 (1 beat)
-   SIZE = 2 (4 bytes / 32 bits)
-   BURST = 0
-   LOCK = 0
-   REGION = 0
-   CACHE = 0
-   QOS = 0
-   PROT = 0
-   */
-
-`ifdef HBMC
     wire [31:0] awaddr;
     wire awvalid;
     wire awready;
@@ -492,15 +441,25 @@ module sonata_top #(
 
     wire axi_clk = progclk; // NOTE: alternatively, fixed 25 MHz mainclk_buf
 
+    // synchronize hyperram reset to hyperram clock for stability(?):
+    wire hr_reset;
+    cdc_simple U_hr_reset_cdc (
+        .reset      (reset),
+        .clk        (progclk_hr),
+        .data_in    (hreset),
+        .data_out   (hr_reset),
+        .data_out_r ()
+    );
+
     hyperram_hbmc_wrapper U_hyperram_wrapper (
-        .hreset                 (hreset),
+        .hreset                 (hr_reset),
         .hclk                   (progclk_hr),
 
         .clk_90p_locked         (clk_90p_locked),
         .clk_iserdes_locked     (clk_iserdes_locked),
 
         .s_axi_aclk             (axi_clk),
-        .s_axi_aresetn          (~hreset),
+        .s_axi_aresetn          (~hr_reset),
 
         .s_axi_awid             (0),
         .s_axi_awaddr           (awaddr),
@@ -557,7 +516,7 @@ module sonata_top #(
 
     simple_hyperram_axi_rwtest U_hyperram_test(
         .clk                            (axi_clk        ),
-        .reset                          (hreset         ),
+        .reset                          (hr_reset       ),
         .active_usb                     (~lb_manual     ),
         .single_write_usb               (hbmc_write     ),
         .single_read_usb                (hbmc_read      ),
@@ -573,7 +532,8 @@ module sonata_top #(
         .error_addr                     (auto_error_addr),
         .addr_start                     (auto_addr_start ),
         .addr_stop                      (auto_addr_stop ),
-        .read_error                     (hypr_busy_stuck ), // re-purposing existing flag!
+        .rresp_error                    (rresp_error ),
+        .bresp_error                    (bresp_error ),
         .idle                           (hbmc_idle),
 
         .awaddr                         (awaddr  ),
@@ -599,87 +559,6 @@ module sonata_top #(
     );
 
 
-`else
-    hyperram_wrapper U_hyperram_wrapper (
-        .hreset                         (hreset),
-        .hclk                           (progclk_hr),
-        .error                          (),
-        .clk_90p_locked                 (clk_90p_locked),
-
-        .lb1_wr                         (lb1_wr         ),
-        .lb1_rd                         (lb1_rd         ),
-        .lb1_addr                       (lb1_addr       ),
-        .lb1_wr_d                       (lb1_wr_d       ),
-        .lb1_rd_d                       (lb1_rd_d       ),
-        .lb1_rd_rdy                     (lb1_rd_rdy     ),
-
-        .lb2_wr                         (0),
-        .lb2_rd                         (0),
-        .lb2_addr                       (0),
-        .lb2_wr_d                       (0),
-        .lb2_rd_d                       (),
-        .lb2_rd_rdy                     (),
-
-        .hypr1_dq                       (HYPERRAM_DQ    ),
-        .hypr1_rwds                     (HYPERRAM_RWDS  ),
-        .hypr1_ckp                      (HYPERRAM_CKP   ),
-        .hypr1_ckn                      (HYPERRAM_CKN   ),
-        .hypr1_rst_l                    (HYPERRAM_nRST  ),
-        .hypr1_cs_l                     (HYPERRAM_CS    ),
-        .hypr1_busy                     (hypr_busy      ),
-
-        .hypr2_dq                       (),
-        .hypr2_rwds                     (),
-        .hypr2_ckp                      (),
-        .hypr2_ckn                      (),
-        .hypr2_rst_l                    (),
-        .hypr2_cs_l                     (),
-        .hypr2_busy                     (),
-
-        .hypr1_busy_stuck               (hypr_busy_stuck ),
-        .hypr2_busy_stuck               ()
-
-    );
-
-    simple_hyperram_rwtest U_hyperram_test(
-        .clk                            (progclk_hr     ),
-        .reset                          (reset          ),
-        .active_usb                     (~lb_manual     ),
-        .clear_fail                     (auto_clear_fail),
-        .check1                         (auto_check1 ),
-        .check2                         (1'b0 ),
-        .lfsr_mode                      (auto_lfsr_mode ),
-        .pass                           (auto_pass      ),
-        .fail                           (auto_fail      ),
-        .iteration                      (auto_iterations),
-        .current_addr                   (auto_current_addr),
-        .total_errors                   (auto_errors    ),
-        .error_addr                     (auto_error_addr),
-        .addr_start                     (auto_addr_start ),
-        .addr_stop                      (auto_addr_stop ),
-        .wait_value                     (wait_value     ),
-                                                     
-        .lb1_wr                         (auto_lb1_wr    ),
-        .lb1_rd                         (auto_lb1_rd    ),
-        .lb1_addr                       (auto_lb1_addr  ),
-        .lb1_wr_d                       (auto_lb1_wr_d  ),
-        .lb1_rd_d                       (lb1_rd_d       ),
-        .lb1_rd_rdy                     (lb1_rd_rdy     ),
-        .hr1_busy                       (hypr_busy     ),
-        .hr1_busy_stuck                 (hypr_busy_stuck),
-
-        .lb2_wr                         (),
-        .lb2_rd                         (),
-        .lb2_addr                       (),
-        .lb2_wr_d                       (),
-        .lb2_rd_d                       (0),
-        .lb2_rd_rdy                     (1'b1),
-        .hr2_busy                       (0),
-        .hr2_busy_stuck                 ()
-    );
-
-`endif
-
    xadc #(
       .pBYTECNT_SIZE    (pBYTECNT_SIZE)
    ) U_xadc (
@@ -695,44 +574,6 @@ module sonata_top #(
       .reg_write        (reg_write), 
       .xadc_error       (xadc_error_flag)
    ); 
-
-    /*
-`ifdef ILA_RAW_HR
-    wire la_clk;
-    wire la_locked;
-  la_clk_wiz instance_name
-  (
-    // Clock out ports
-    .clk_out1   (la_clk),
-    .reset      (reset),
-    .locked     (la_locked),
-    .clk_in1    (ext_clk)
-  );
-
-    ila_raw_hw U_ila_raw_hr1 (
-       .clk            (la_clk),
-       .probe0         (hypr1_dq),              // 7:0
-       .probe1         (hypr1_rwds),
-       .probe2         (hypr1_ckp),
-       .probe3         (hypr1_ckn),
-       .probe4         (hypr1_rst_l),
-       .probe5         (hypr1_cs_l),
-       .probe6         (hypr1_busy_stuck)
-    );
-
-    ila_raw_hw U_ila_raw_hr2 (
-       .clk            (la_clk),
-       .probe0         (hypr2_dq),              // 7:0
-       .probe1         (hypr2_rwds),
-       .probe2         (hypr2_ckp),
-       .probe3         (hypr2_ckn),
-       .probe4         (hypr2_rst_l),
-       .probe5         (hypr2_cs_l),
-       .probe6         (hypr2_busy_stuck)
-    );
-
-`endif
-    */
 
 
 endmodule
