@@ -2,7 +2,7 @@
 set_property IOSTANDARD LVCMOS18 [get_ports *]
 
 set_property -dict { PACKAGE_PIN  P15  IOSTANDARD LVCMOS33 } [get_ports { MAINCLK }];
-set_property -dict { PACKAGE_PIN  R11  IOSTANDARD LVCMOS33 } [get_ports { NRST }];
+set_property -dict { PACKAGE_PIN  T5   IOSTANDARD LVCMOS33 } [get_ports { NRST }];
 
 set_property -dict { PACKAGE_PIN  C17  IOSTANDARD   LVCMOS33 } [get_ports { ss2_tx }];
 set_property -dict { PACKAGE_PIN  D18  IOSTANDARD   LVCMOS33 } [get_ports { ss2_rx }];
@@ -52,7 +52,7 @@ set_property -dict { PACKAGE_PIN   D3  IOSTANDARD   LVCMOS18 } [get_ports { SELS
 set_property -dict { PACKAGE_PIN   F4  IOSTANDARD   LVCMOS18 } [get_ports { SELSW[1] }];
 set_property -dict { PACKAGE_PIN   F3  IOSTANDARD   LVCMOS18 } [get_ports { SELSW[2] }];
 
-set_property -dict { PACKAGE_PIN  M16  IOSTANDARD   LVCMOS33 } [get_ports { FPGAIO_TURBO }];
+set_property -dict { PACKAGE_PIN   T4  IOSTANDARD   LVCMOS33 } [get_ports { FPGAIO_TURBO }];
 set_property -dict { PACKAGE_PIN  G13  IOSTANDARD   LVCMOS33 } [get_ports { ANALOG_DIGITAL[0] }];
 set_property -dict { PACKAGE_PIN  D14  IOSTANDARD   LVCMOS33 } [get_ports { ANALOG_DIGITAL[1] }];
 set_property -dict { PACKAGE_PIN  C14  IOSTANDARD   LVCMOS33 } [get_ports { ANALOG_DIGITAL[2] }];
