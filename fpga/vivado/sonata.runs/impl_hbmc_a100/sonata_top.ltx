@@ -1,0 +1,2784 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "25000000"
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "U_hyperram_test/U_ila_hyperram_test",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "0F0D157090205B7EAB5D5E19569A9C80",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 0,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/active",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 1,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/pass",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 2,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/fail",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/state[2]",
+                                                "parentNetId": 3
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/state[1]",
+                                                "parentNetId": 4
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/state[0]",
+                                                "parentNetId": 5
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/iteration",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/iteration[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/iteration[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/rresp_error",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/total_errors",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/total_errors[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/total_errors[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 7,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/expected_data",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/expected_data[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/expected_data[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 8,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/writing",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 9,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/lfsr",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/lfsr[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/lfsr[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/araddr_1",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr_1[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/awvalid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/awready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 13,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/wdata",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/wdata[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/wdata[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 14,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/wvalid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 15,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/wready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 1,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/bresp",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/bresp[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/bresp[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 17,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/bvalid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/bready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe19",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 19,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/araddr",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/araddr[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/araddr[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe20",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 20,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/arvalid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe21",
+                                "id": 21,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 21,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/arready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe22",
+                                "id": 22,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 22,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/rdata",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/rdata[31]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[30]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[29]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[28]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[27]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[26]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[25]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[24]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[23]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[22]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[21]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[20]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[19]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[18]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[17]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[16]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[15]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[14]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[13]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[12]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[11]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[10]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[9]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[8]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[7]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[6]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[5]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[4]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[3]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[2]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rdata[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe23",
+                                "id": 23,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 1,
+                                "portIndex": 23,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/rresp",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_hyperram_test/rresp[1]"
+                                            },
+                                            {
+                                                "name": "U_hyperram_test/rresp[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe24",
+                                "id": 24,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 24,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/rvalid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe25",
+                                "id": 25,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 25,
+                                "nets": [
+                                    {
+                                        "name": "U_hyperram_test/rready",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "U_ila_fe",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 1,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "B435746CAE3C52C88255973FC51C1E10",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 26,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "ss2_rx_IBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 27,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "ss2_tx_OBUF",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 28,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "dut_dout",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dut_dout[7]"
+                                            },
+                                            {
+                                                "name": "dut_dout[6]"
+                                            },
+                                            {
+                                                "name": "dut_dout[5]"
+                                            },
+                                            {
+                                                "name": "dut_dout[4]"
+                                            },
+                                            {
+                                                "name": "dut_dout[3]"
+                                            },
+                                            {
+                                                "name": "dut_dout[2]"
+                                            },
+                                            {
+                                                "name": "dut_dout[1]"
+                                            },
+                                            {
+                                                "name": "dut_dout[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 29,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "dut_address",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dut_address[31]"
+                                            },
+                                            {
+                                                "name": "dut_address[30]"
+                                            },
+                                            {
+                                                "name": "dut_address[29]"
+                                            },
+                                            {
+                                                "name": "dut_address[28]"
+                                            },
+                                            {
+                                                "name": "dut_address[27]"
+                                            },
+                                            {
+                                                "name": "dut_address[26]"
+                                            },
+                                            {
+                                                "name": "dut_address[25]"
+                                            },
+                                            {
+                                                "name": "dut_address[24]"
+                                            },
+                                            {
+                                                "name": "dut_address[23]"
+                                            },
+                                            {
+                                                "name": "dut_address[22]"
+                                            },
+                                            {
+                                                "name": "dut_address[21]"
+                                            },
+                                            {
+                                                "name": "dut_address[20]"
+                                            },
+                                            {
+                                                "name": "dut_address[19]"
+                                            },
+                                            {
+                                                "name": "dut_address[18]"
+                                            },
+                                            {
+                                                "name": "dut_address[17]"
+                                            },
+                                            {
+                                                "name": "dut_address[16]"
+                                            },
+                                            {
+                                                "name": "dut_address[15]"
+                                            },
+                                            {
+                                                "name": "dut_address[14]"
+                                            },
+                                            {
+                                                "name": "dut_address[13]"
+                                            },
+                                            {
+                                                "name": "dut_address[12]"
+                                            },
+                                            {
+                                                "name": "dut_address[11]"
+                                            },
+                                            {
+                                                "name": "dut_address[10]"
+                                            },
+                                            {
+                                                "name": "dut_address[9]"
+                                            },
+                                            {
+                                                "name": "dut_address[8]"
+                                            },
+                                            {
+                                                "name": "dut_address[7]"
+                                            },
+                                            {
+                                                "name": "dut_address[6]"
+                                            },
+                                            {
+                                                "name": "dut_address[5]"
+                                            },
+                                            {
+                                                "name": "dut_address[4]"
+                                            },
+                                            {
+                                                "name": "dut_address[3]"
+                                            },
+                                            {
+                                                "name": "dut_address[2]"
+                                            },
+                                            {
+                                                "name": "dut_address[1]"
+                                            },
+                                            {
+                                                "name": "dut_address[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 30,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "dut_rdn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 31,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "dut_wrn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 32,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "dut_cen",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 33,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "ss2_error",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 34,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 23,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "reg_address",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "reg_address[23]"
+                                            },
+                                            {
+                                                "name": "reg_address[22]"
+                                            },
+                                            {
+                                                "name": "reg_address[21]"
+                                            },
+                                            {
+                                                "name": "reg_address[20]"
+                                            },
+                                            {
+                                                "name": "reg_address[19]"
+                                            },
+                                            {
+                                                "name": "reg_address[18]"
+                                            },
+                                            {
+                                                "name": "reg_address[17]"
+                                            },
+                                            {
+                                                "name": "reg_address[16]"
+                                            },
+                                            {
+                                                "name": "reg_address[15]"
+                                            },
+                                            {
+                                                "name": "reg_address[14]"
+                                            },
+                                            {
+                                                "name": "reg_address[13]"
+                                            },
+                                            {
+                                                "name": "reg_address[12]"
+                                            },
+                                            {
+                                                "name": "reg_address[11]"
+                                            },
+                                            {
+                                                "name": "reg_address[10]"
+                                            },
+                                            {
+                                                "name": "reg_address[9]"
+                                            },
+                                            {
+                                                "name": "reg_address[8]"
+                                            },
+                                            {
+                                                "name": "reg_address[7]"
+                                            },
+                                            {
+                                                "name": "reg_address[6]"
+                                            },
+                                            {
+                                                "name": "reg_address[5]"
+                                            },
+                                            {
+                                                "name": "reg_address[4]"
+                                            },
+                                            {
+                                                "name": "reg_address[3]"
+                                            },
+                                            {
+                                                "name": "reg_address[2]"
+                                            },
+                                            {
+                                                "name": "reg_address[1]"
+                                            },
+                                            {
+                                                "name": "reg_address[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 35,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "reg_bytecnt",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "reg_bytecnt[7]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[6]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[5]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[4]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[3]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[2]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[1]"
+                                            },
+                                            {
+                                                "name": "reg_bytecnt[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 36,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "write_data",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "write_data[7]"
+                                            },
+                                            {
+                                                "name": "write_data[6]"
+                                            },
+                                            {
+                                                "name": "write_data[5]"
+                                            },
+                                            {
+                                                "name": "write_data[4]"
+                                            },
+                                            {
+                                                "name": "write_data[3]"
+                                            },
+                                            {
+                                                "name": "write_data[2]"
+                                            },
+                                            {
+                                                "name": "write_data[1]"
+                                            },
+                                            {
+                                                "name": "write_data[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 37,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "read_data",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "read_data[7]"
+                                            },
+                                            {
+                                                "name": "read_data[6]"
+                                            },
+                                            {
+                                                "name": "read_data[5]"
+                                            },
+                                            {
+                                                "name": "read_data[4]"
+                                            },
+                                            {
+                                                "name": "read_data[3]"
+                                            },
+                                            {
+                                                "name": "read_data[2]"
+                                            },
+                                            {
+                                                "name": "read_data[1]"
+                                            },
+                                            {
+                                                "name": "read_data[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 38,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "reg_read",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 39,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "reg_write",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "U_ss2/U_ila_ss2",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 2,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "28302AF389305525A5AFA01BDB785749",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 40,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rxd",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 41,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/txd",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 42,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/error",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 43,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_1",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_1[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 44,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_2",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_2[1]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 45,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_3",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_3[2]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 46,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_4",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_4[3]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 47,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_5",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_5[4]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 48,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_6",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_6[5]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 49,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_7",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_7[6]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 50,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors_8",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors_8[7]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 51,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/errors",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/errors[8]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 52,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_state[2]",
+                                                "parentNetId": 335
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_state[1]",
+                                                "parentNetId": 336
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_state[0]",
+                                                "parentNetId": 337
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 53,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_command",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_command[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_command[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 54,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_subcommand",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_subcommand[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_subcommand[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 55,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_len",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_len[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_len[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 56,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/calculated_crc",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/calculated_crc[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/calculated_crc[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 57,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_data_byte",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_data_byte[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_data_byte[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 58,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_ack",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe19",
+                                "id": 59,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 2,
+                                "portIndex": 19,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/tx_state",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/tx_state[2]",
+                                                "parentNetId": 379
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_state[1]",
+                                                "parentNetId": 380
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_state[0]",
+                                                "parentNetId": 381
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe20",
+                                "id": 60,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 20,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/tx_data_byte",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/tx_data_byte[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/tx_data_byte[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe21",
+                                "id": 61,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 21,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/tx_busy",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe22",
+                                "id": 62,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 22,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/combined_reset",
+                                        "isBus": false,
+                                        "parentNetId": 391
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe23",
+                                "id": 63,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 23,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/clear_rx_errors",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe24",
+                                "id": 64,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 24,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/rx_byte_count",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "U_ss2/rx_byte_count[7]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[6]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[5]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[4]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[3]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[2]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[1]"
+                                            },
+                                            {
+                                                "name": "U_ss2/rx_byte_count[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe25",
+                                "id": 65,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 25,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/ss2_rst",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe26",
+                                "id": 66,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 26,
+                                "nets": [
+                                    {
+                                        "name": "U_ss2/<const0>",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "parent_nets": [
+                    {
+                        "id": 3,
+                        "name": "U_hyperram_test/state[2]",
+                        "state_reg": [
+                            {
+                                "name": "U_hyperram_test/state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "pS_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE_RESP",
+                                        "val": "101"
+                                    },
+                                    {
+                                        "name": "pS_READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ_RESP",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "name": "U_hyperram_test/state[1]",
+                        "state_reg": [
+                            {
+                                "name": "U_hyperram_test/state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "pS_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE_RESP",
+                                        "val": "101"
+                                    },
+                                    {
+                                        "name": "pS_READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ_RESP",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "name": "U_hyperram_test/state[0]",
+                        "state_reg": [
+                            {
+                                "name": "U_hyperram_test/state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "pS_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_WRITE",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_WRITE_RESP",
+                                        "val": "101"
+                                    },
+                                    {
+                                        "name": "pS_READ",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_WAIT_READ_RESP",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 335,
+                        "name": "U_ss2/rx_state[2]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/rx_state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "pS_RX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_RX_NUM_BYTES",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_RX_RX",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_RX_INSERT_ZERO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_RX_WAIT_NUM_BYTES",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_RX_DELIMITER",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 336,
+                        "name": "U_ss2/rx_state[1]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/rx_state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "pS_RX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_RX_NUM_BYTES",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_RX_RX",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_RX_INSERT_ZERO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_RX_WAIT_NUM_BYTES",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_RX_DELIMITER",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 337,
+                        "name": "U_ss2/rx_state[0]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/rx_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "pS_RX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_RX_NUM_BYTES",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_RX_RX",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_RX_INSERT_ZERO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_RX_WAIT_NUM_BYTES",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_RX_DELIMITER",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 379,
+                        "name": "U_ss2/tx_state[2]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/tx_state_reg[2]",
+                                "states": [
+                                    {
+                                        "name": "pS_TX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_TX_0WAIT",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_TX_WAIT_READY",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_TX_EMPTY_FIFO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_TX_DONE",
+                                        "val": "100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 380,
+                        "name": "U_ss2/tx_state[1]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/tx_state_reg[1]",
+                                "states": [
+                                    {
+                                        "name": "pS_TX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_TX_0WAIT",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_TX_WAIT_READY",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_TX_EMPTY_FIFO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_TX_DONE",
+                                        "val": "100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 381,
+                        "name": "U_ss2/tx_state[0]",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/tx_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "pS_TX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_TX_0WAIT",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_TX_WAIT_READY",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_TX_EMPTY_FIFO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_TX_DONE",
+                                        "val": "100"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 391,
+                        "name": "U_ss2/combined_reset",
+                        "state_reg": [
+                            {
+                                "name": "U_ss2/rx_state_reg[0]",
+                                "states": [
+                                    {
+                                        "name": "pS_RX_IDLE",
+                                        "val": "000"
+                                    },
+                                    {
+                                        "name": "pS_RX_NUM_BYTES",
+                                        "val": "001"
+                                    },
+                                    {
+                                        "name": "pS_RX_RX",
+                                        "val": "010"
+                                    },
+                                    {
+                                        "name": "pS_RX_INSERT_ZERO",
+                                        "val": "011"
+                                    },
+                                    {
+                                        "name": "pS_RX_WAIT_NUM_BYTES",
+                                        "val": "100"
+                                    },
+                                    {
+                                        "name": "pS_RX_DELIMITER",
+                                        "val": "110"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
