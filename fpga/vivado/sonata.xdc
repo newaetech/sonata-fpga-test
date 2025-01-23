@@ -69,6 +69,13 @@ set_property -dict { PACKAGE_PIN   B8  IOSTANDARD   LVCMOS33 } [get_ports { ANAL
 #set_property IOSTANDARD ANALOG [get_ports { vauxp12 }]; 
 #set_property IOSTANDARD ANALOG [get_ports { vauxn12 }]; 
 
+# vauxp/n  4 / ANALOG 0: C5/C6, bank 35 IO_L1P_T0_AD4P_35
+# vauxp/n  5 / ANALOG 2: A5/A6, bank 35 IO_L3P_T0_DQS_AD5P_35
+# vauxp/n  6 / ANALOG 4: C4/B4, bank 35 IO_L7P_T1_AD6P_35
+# vauxp/n 12 / ANALOG 1: B6/B7, bank 35 IO_L2P_T0_AD12P_35
+# vauxp/n 13 / ANALOG 3: E5/E6, bank 35 IO_L5N_T0_AD13N_35
+# vauxp/n 14 / ANALOG 5: A3/A4, bank 35 IO_L8P_T1_AD14P_35
+
 set_property -dict { PACKAGE_PIN   B1  IOSTANDARD   LVCMOS18 } [get_ports { HYPERRAM_DQ[0] }];
 set_property -dict { PACKAGE_PIN   E2  IOSTANDARD   LVCMOS18 } [get_ports { HYPERRAM_DQ[1] }];
 set_property -dict { PACKAGE_PIN   H1  IOSTANDARD   LVCMOS18 } [get_ports { HYPERRAM_DQ[2] }];

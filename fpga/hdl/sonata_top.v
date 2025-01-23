@@ -46,13 +46,14 @@ module sonata_top #(
     input wire  [2:0]                   SELSW,
 
     // Hyperram:
+`ifndef NO_HYPERRAM
     inout  wire [7:0]                   HYPERRAM_DQ,
     inout  wire                         HYPERRAM_RWDS,
     output wire                         HYPERRAM_CKP,
     output wire                         HYPERRAM_CKN,
     output wire                         HYPERRAM_nRST,
     output wire                         HYPERRAM_CS,
-
+`endif
 
     // XADC:
     input  wire [5:0]                   ANALOG_DIGITAL,
@@ -283,6 +284,7 @@ module sonata_top #(
     wire [63:0] cores_en;
     wire [7:0] core_sel;
 
+
     sonata_reg #(
        .pBYTECNT_SIZE           (pBYTECNT_SIZE),
        .pPT_WIDTH               (pPT_WIDTH),
@@ -444,6 +446,21 @@ module sonata_top #(
         .data_out_r ()
     );
 
+`ifdef NO_HYPERRAM
+    assign rresp_error = 0;
+    assign bresp_error = 0;
+    assign clk_90p_locked = 0;
+    assign clk_iserdes_locked = 0;
+    assign auto_pass = 0;
+    assign auto_fail = 0;
+    assign auto_iterations = 0;
+    assign auto_current_addr = 0;
+    assign auto_errors = 0;
+    assign auto_error_addr = 0;
+    assign hbmc_rdata = 0;
+    assign hbmc_idle = 0;
+
+`else
     hyperram_hbmc_wrapper U_hyperram_wrapper (
         .hreset                 (hr_reset),
         .hclk                   (progclk_hr),
@@ -550,6 +567,7 @@ module sonata_top #(
         .rvalid                         (rvalid  ),
         .rready                         (rready  )
     );
+`endif
 
 
    xadc #(

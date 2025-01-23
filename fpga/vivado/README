@@ -1,0 +1,3 @@
+For the A200, build with NO_HYPERRAM defined. Used AES_INSTANCES = 42 for power estimate -> 72% LUT utilization
+
+Reduce AES_INSTANCES for the smaller FPGA builds!
